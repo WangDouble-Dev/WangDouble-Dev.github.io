@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Double Blog</title>
+    <link>https://wnagdouble.github.io/</link>
+    <description>Recent content on Double Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 21 Oct 2023 23:03:03 +0800</lastBuildDate>
+    <atom:link href="https://wnagdouble.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About Me</title>
+      <link>https://wnagdouble.github.io/about/</link>
+      <pubDate>Sat, 09 Dec 2023 21:18:39 +0800</pubDate>
+      <guid>https://wnagdouble.github.io/about/</guid>
+      <description>温柔可爱美丽善良落落大方，善解人意，爱心十足，爱自己爱家人，人群中最靓的那个，beautiful ！！ —— 任先生</description>
+    </item>
+    <item>
+      <title>Http Toolkit Android</title>
+      <link>https://wnagdouble.github.io/post/http_toolkit_android/</link>
+      <pubDate>Sat, 21 Oct 2023 23:03:03 +0800</pubDate>
+      <guid>https://wnagdouble.github.io/post/http_toolkit_android/</guid>
+      <description>使用Http Toolkit Android抓包的简易方法 主要步骤 1. 在电脑上安装Http Toolkit Http Toolkit Windows端下载地址&#xA;2. 在电脑上安装夜神模拟器 夜神模拟器下载地址&#xA;3. 下载Http Toolkit Android端 可以在谷歌应用商店下载。不支持谷歌应用商店的手机可以在APKPure下载。&#xA;4. 在夜神模拟器中安装Http Toolkit Android端 将下载好的apk文件拖入夜神模拟器中即可。&#xA;5. 开始抓包 在电脑上打开Http Toolkit，选择Android Device via ADB。 然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。 常见问题 1. 为什么不用Http Toolkit的Android Device via QR Code？使用起来更便捷，也不用安装夜神模拟器。 因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用Android Device via ADB能避免这个问题。详情请看这里。&#xA;2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？ 也可以。只要打开你的安卓模拟器之后，Android Device via ADB图标正常显示就可以使用。&#xA;图标这样是不能使用的。&#xA;注意事项 要模拟器开着的情况下，Http Toolkit的Android Device via ADB图标才会正常显示。 要使用Android Device via ADB，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。 其他注意事项请看这里。 </description>
+    </item>
+    <item>
+      <title>Markdown Syntax Guide</title>
+      <link>https://wnagdouble.github.io/post/markdown_syntax_guide/</link>
+      <pubDate>Thu, 16 Feb 2023 18:58:11 +0800</pubDate>
+      <guid>https://wnagdouble.github.io/post/markdown_syntax_guide/</guid>
+      <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&#xA;Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.&#xA;H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description>
+    </item>
+  </channel>
+</rss>

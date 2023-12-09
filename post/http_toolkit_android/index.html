@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Http Toolkit Android | Double Blog</title>
+    <meta name="description"
+        content="使用Http Toolkit Android抓包的简易方法 主要步骤 1. 在电脑上安装Http Toolkit Http Toolkit Windows端下载地址
+2. 在电脑上安装夜神模拟器 夜神模拟器下载地址
+3. 下载Http Toolkit Android端 可以在谷歌应用商店下载。不支持谷歌应用商店的手机可以在APKPure下载。
+4. 在夜神模拟器中安装Http Toolkit Android端 将下载好的apk文件拖入夜神模拟器中即可。
+5. 开始抓包 在电脑上打开Http Toolkit，选择Android Device via ADB。 然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。 常见问题 1. 为什么不用Http Toolkit的Android Device via QR Code？使用起来更便捷，也不用安装夜神模拟器。 因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用Android Device via ADB能避免这个问题。详情请看这里。
+2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？ 也可以。只要打开你的安卓模拟器之后，Android Device via ADB图标正常显示就可以使用。
+图标这样是不能使用的。
+注意事项 要模拟器开着的情况下，Http Toolkit的Android Device via ADB图标才会正常显示。 要使用Android Device via ADB，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。 其他注意事项请看这里。 ">
+    <link rel="canonical" href="https://wnagdouble.github.io/post/http_toolkit_android/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://wnagdouble.github.io/scss/style.min.aa7209164f013c6883aa54384ea45a46e582eacf9a17e9565badebd557dd1059.css">
+
+    <meta property="og:title" content="Http Toolkit Android" />
+<meta property="og:description" content="使用Http Toolkit Android抓包的简易方法 主要步骤 1. 在电脑上安装Http Toolkit Http Toolkit Windows端下载地址
+2. 在电脑上安装夜神模拟器 夜神模拟器下载地址
+3. 下载Http Toolkit Android端 可以在谷歌应用商店下载。不支持谷歌应用商店的手机可以在APKPure下载。
+4. 在夜神模拟器中安装Http Toolkit Android端 将下载好的apk文件拖入夜神模拟器中即可。
+5. 开始抓包 在电脑上打开Http Toolkit，选择Android Device via ADB。 然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。 常见问题 1. 为什么不用Http Toolkit的Android Device via QR Code？使用起来更便捷，也不用安装夜神模拟器。 因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用Android Device via ADB能避免这个问题。详情请看这里。
+2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？ 也可以。只要打开你的安卓模拟器之后，Android Device via ADB图标正常显示就可以使用。
+图标这样是不能使用的。
+注意事项 要模拟器开着的情况下，Http Toolkit的Android Device via ADB图标才会正常显示。 要使用Android Device via ADB，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。 其他注意事项请看这里。 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wnagdouble.github.io/post/http_toolkit_android/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-10-21T23:03:03+08:00" />
+<meta property="article:modified_time" content="2023-10-21T23:03:03+08:00" /><meta property="og:site_name" content="Wang Double" />
+
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Http Toolkit Android"/>
+<meta name="twitter:description" content="使用Http Toolkit Android抓包的简易方法 主要步骤 1. 在电脑上安装Http Toolkit Http Toolkit Windows端下载地址
+2. 在电脑上安装夜神模拟器 夜神模拟器下载地址
+3. 下载Http Toolkit Android端 可以在谷歌应用商店下载。不支持谷歌应用商店的手机可以在APKPure下载。
+4. 在夜神模拟器中安装Http Toolkit Android端 将下载好的apk文件拖入夜神模拟器中即可。
+5. 开始抓包 在电脑上打开Http Toolkit，选择Android Device via ADB。 然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。 常见问题 1. 为什么不用Http Toolkit的Android Device via QR Code？使用起来更便捷，也不用安装夜神模拟器。 因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用Android Device via ADB能避免这个问题。详情请看这里。
+2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？ 也可以。只要打开你的安卓模拟器之后，Android Device via ADB图标正常显示就可以使用。
+图标这样是不能使用的。
+注意事项 要模拟器开着的情况下，Http Toolkit的Android Device via ADB图标才会正常显示。 要使用Android Device via ADB，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。 其他注意事项请看这里。 "/>
+
+    
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo">
+                    <h1>Double Blog</h1>
+                </span>
+            </a>
+
+            
+            <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://wnagdouble.github.io/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                <a href="/about" class="navbar-item">About</a>
+                
+                <a href="/post" class="navbar-item">Blog</a>
+                
+                <a href="/categories" class="navbar-item">Categories</a>
+                
+            </div>
+
+        </div>
+        <div class="search">
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            <a id="search-btn" style="display: inline-block;" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/wnagdouble.github.io\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/wnagdouble.github.io\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1">Http Toolkit Android</h1>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/profile.jpg" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Wang Double</p>
+                            <p><time>October 21, 2023</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-categories-container">
+                    <a href="/categories/%E5%85%B6%E5%AE%83">其它</a>
+                </div>
+            </div>
+        </div>
+        <div class="content article-content">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <h1 id="使用http-toolkit-android抓包的简易方法">使用Http Toolkit Android抓包的简易方法</h1>
+<h2 id="主要步骤">主要步骤</h2>
+<h3 id="1-在电脑上安装http-toolkit">1. 在电脑上安装Http Toolkit</h3>
+<p><a href="https://httptoolkit.com/download/win-exe/">Http Toolkit Windows端下载地址</a></p>
+<h3 id="2-在电脑上安装夜神模拟器">2. 在电脑上安装夜神模拟器</h3>
+<p><a href="https://www.yeshen.com/">夜神模拟器下载地址</a></p>
+<h3 id="3-下载http-toolkit-android端">3. 下载Http Toolkit Android端</h3>
+<p>可以在<a href="https://play.google.com/store/apps/details?id=tech.httptoolkit.android.v1&amp;hl=zh_TW&amp;gl=US">谷歌应用商店</a>下载。不支持谷歌应用商店的手机可以在<a href="https://apkpure.com/cn/http-toolkit/tech.httptoolkit.android.v1">APKPure</a>下载。</p>
+<h3 id="4-在夜神模拟器中安装http-toolkit-android端">4. 在夜神模拟器中安装Http Toolkit Android端</h3>
+<p>将下载好的apk文件拖入夜神模拟器中即可。</p>
+<h3 id="5-开始抓包">5. 开始抓包</h3>
+<p>在电脑上打开Http Toolkit，选择<code>Android Device via ADB</code>。
+<img src="../../images/202310221042.png" alt="img_1.png">
+然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。
+<img src="../../images/202310212337.png" alt="img.png"><img src="../../images/202310221043.png" alt="img_2"></p>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="1-为什么不用http-toolkit的android-device-via-qr-code使用起来更便捷也不用安装夜神模拟器">1. 为什么不用Http Toolkit的<code>Android Device via QR Code</code>？使用起来更便捷，也不用安装夜神模拟器。</h3>
+<p>因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用<code>Android Device via ADB</code>能避免这个问题。详情请看<a href="https://httptoolkit.com/docs/guides/android/#intercepting-traffic-from-your-own-android-app">这里</a>。</p>
+<h3 id="2-一定要用夜神模拟器吗其他安卓模拟器不行吗">2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？</h3>
+<p>也可以。只要打开你的安卓模拟器之后，<code>Android Device via ADB</code>图标正常显示就可以使用。<br>
+<img src="../../images/202310221122.png" alt="img_3.png">图标这样是不能使用的。</p>
+<h2 id="注意事项">注意事项</h2>
+<ul>
+<li>要模拟器开着的情况下，Http Toolkit的<code>Android Device via ADB</code>图标才会正常显示。</li>
+<li>要使用<code>Android Device via ADB</code>，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。<img src="../../images/202310221134.png" alt="img_4.png"></li>
+<li>其他注意事项请看<a href="https://httptoolkit.com/docs/guides/android/#intercepting-traffic-from-3rd-party-android-apps">这里</a>。</li>
+</ul>
+
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a>
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p>Previous post</p>
+                <a href="https://wnagdouble.github.io/post/markdown_syntax_guide/">Markdown Syntax Guide</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+            </div>
+        </section>
+    </div>
+
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2023 <a href="https://wnagdouble.github.io/">Double Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" target="_blank">Hugo</a> &
+        <a href="https://github.com/hotjuicew/hugo-JuiceBar" target="_blank">JuiceBar</a>
+    </span>
+    </div>
+  </footer></body>
+</html>
+
