@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Docker安装 | Double Blog</title>
+    <meta name="description"
+        content="Docker入门安装&amp;使用 仅记录自己学习Docker的过程。安装的是Docker Engine不是Desktop。
+运行环境 操作系统：CentOS Linux 8 参考网站 官方CentOS下载Docker Engine指引 执行步骤 配置repository 用于安装和更新Docker。
+sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安装Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动Docker sudo systemctl start docker 测试Docker sudo docker run hello-world 当你执行 sudo docker run hello-world 命令时，Docker 会做以下几件事：
+Docker 会在本地查找名为 &ldquo;hello-world&rdquo; 的镜像。 如果在本地没有找到，Docker 会去 Docker Hub（默认的 Docker 镜像仓库）下载 &ldquo;hello-world&rdquo; 镜像。 Docker 会创建一个新的容器，并在这个容器中运行 &ldquo;hello-world&rdquo; 镜像。 &ldquo;hello-world&rdquo; 镜像在下载后存储在 Docker 的镜像库中。你可以通过 docker images 命令查看所有的 Docker 镜像。">
+    <link rel="canonical" href="https://wnagdouble.github.io/post/docker_install/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://wnagdouble.github.io/scss/style.min.aa7209164f013c6883aa54384ea45a46e582eacf9a17e9565badebd557dd1059.css">
+
+    <meta property="og:title" content="Docker安装" />
+<meta property="og:description" content="Docker入门安装&amp;使用 仅记录自己学习Docker的过程。安装的是Docker Engine不是Desktop。
+运行环境 操作系统：CentOS Linux 8 参考网站 官方CentOS下载Docker Engine指引 执行步骤 配置repository 用于安装和更新Docker。
+sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安装Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动Docker sudo systemctl start docker 测试Docker sudo docker run hello-world 当你执行 sudo docker run hello-world 命令时，Docker 会做以下几件事：
+Docker 会在本地查找名为 &ldquo;hello-world&rdquo; 的镜像。 如果在本地没有找到，Docker 会去 Docker Hub（默认的 Docker 镜像仓库）下载 &ldquo;hello-world&rdquo; 镜像。 Docker 会创建一个新的容器，并在这个容器中运行 &ldquo;hello-world&rdquo; 镜像。 &ldquo;hello-world&rdquo; 镜像在下载后存储在 Docker 的镜像库中。你可以通过 docker images 命令查看所有的 Docker 镜像。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://wnagdouble.github.io/post/docker_install/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-12-10T13:42:49+08:00" />
+<meta property="article:modified_time" content="2023-12-10T13:42:49+08:00" /><meta property="og:site_name" content="Wang Double" />
+
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Docker安装"/>
+<meta name="twitter:description" content="Docker入门安装&amp;使用 仅记录自己学习Docker的过程。安装的是Docker Engine不是Desktop。
+运行环境 操作系统：CentOS Linux 8 参考网站 官方CentOS下载Docker Engine指引 执行步骤 配置repository 用于安装和更新Docker。
+sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安装Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动Docker sudo systemctl start docker 测试Docker sudo docker run hello-world 当你执行 sudo docker run hello-world 命令时，Docker 会做以下几件事：
+Docker 会在本地查找名为 &ldquo;hello-world&rdquo; 的镜像。 如果在本地没有找到，Docker 会去 Docker Hub（默认的 Docker 镜像仓库）下载 &ldquo;hello-world&rdquo; 镜像。 Docker 会创建一个新的容器，并在这个容器中运行 &ldquo;hello-world&rdquo; 镜像。 &ldquo;hello-world&rdquo; 镜像在下载后存储在 Docker 的镜像库中。你可以通过 docker images 命令查看所有的 Docker 镜像。"/>
+
+    
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo">
+                    <h1>Double Blog</h1>
+                </span>
+            </a>
+
+            
+            <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://wnagdouble.github.io/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                <a href="/about" class="navbar-item">About</a>
+                
+                <a href="/post" class="navbar-item">Blog</a>
+                
+                <a href="/categories" class="navbar-item">Categories</a>
+                
+            </div>
+
+        </div>
+        <div class="search">
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            <a id="search-btn" style="display: inline-block;" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/wnagdouble.github.io\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/wnagdouble.github.io\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1">Docker安装</h1>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/profile.jpg" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Wang Double</p>
+                            <p><time>December 10, 2023</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-categories-container">
+                    <a href="/categories/docker">Docker</a>
+                </div>
+            </div>
+        </div>
+        <div class="content article-content">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+            <aside>
+                <button id="tocButton" ><h4 id="contents" style="margin-left: 1vw;color:rgb(96, 134, 180);margin-bottom: 0;">CONTENTS</h4></button>
+                <div id="hide"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#运行环境">运行环境</a></li>
+    <li><a href="#参考网站">参考网站</a></li>
+    <li><a href="#执行步骤">执行步骤</a>
+      <ul>
+        <li><a href="#配置repository">配置repository</a></li>
+        <li><a href="#安装docker-engine">安装Docker Engine</a></li>
+        <li><a href="#启动docker">启动Docker</a></li>
+        <li><a href="#测试docker">测试Docker</a></li>
+      </ul>
+    </li>
+    <li><a href="#删除指定镜像和容器">删除指定镜像和容器</a>
+      <ul>
+        <li><a href="#删除指定镜像">删除指定镜像</a></li>
+        <li><a href="#删除指定容器">删除指定容器</a></li>
+      </ul>
+    </li>
+    <li><a href="#卸载">卸载</a>
+      <ul>
+        <li><a href="#卸载docker">卸载Docker</a></li>
+        <li><a href="#删除所有镜像容器卷和自定义配置">删除所有镜像、容器、卷和自定义配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </aside>
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <h1 id="docker入门安装使用">Docker入门安装&amp;使用</h1>
+<blockquote>
+<p>仅记录自己学习Docker的过程。安装的是Docker Engine不是Desktop。</p>
+</blockquote>
+<h2 id="运行环境">运行环境</h2>
+<ul>
+<li>操作系统：CentOS Linux 8</li>
+</ul>
+<h2 id="参考网站">参考网站</h2>
+<ul>
+<li><a href="https://docs.docker.com/engine/install/centos/">官方CentOS下载Docker Engine指引</a></li>
+</ul>
+<h2 id="执行步骤">执行步骤</h2>
+<h3 id="配置repository">配置repository</h3>
+<p>用于安装和更新Docker。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo yum install -y yum-utils
+</span></span><span style="display:flex;"><span>sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+</span></span></code></pre></div><h3 id="安装docker-engine">安装Docker Engine</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</span></span></code></pre></div><h3 id="启动docker">启动Docker</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo systemctl start docker
+</span></span></code></pre></div><h3 id="测试docker">测试Docker</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo docker run hello-world
+</span></span></code></pre></div><p>当你执行 <code>sudo docker run hello-world</code> 命令时，Docker 会做以下几件事：</p>
+<ol>
+<li>Docker 会在本地查找名为 &ldquo;hello-world&rdquo; 的镜像。</li>
+<li>如果在本地没有找到，Docker 会去 Docker Hub（默认的 Docker 镜像仓库）下载 &ldquo;hello-world&rdquo; 镜像。</li>
+<li>Docker 会创建一个新的容器，并在这个容器中运行 &ldquo;hello-world&rdquo; 镜像。</li>
+</ol>
+<p>&ldquo;hello-world&rdquo; 镜像在下载后存储在 Docker 的镜像库中。你可以通过 <code>docker images</code> 命令查看所有的 Docker 镜像。</p>
+<p>&ldquo;hello-world&rdquo; 容器在运行后会存在于 Docker 的容器列表中，即使它已经停止运行。你可以通过 <code>docker ps -a</code> 命令查看所有的 Docker 容器，包括已经停止运行的。</p>
+<p>所以，&ldquo;hello-world&rdquo; 镜像存储在 Docker 的镜像库中，而 &ldquo;hello-world&rdquo; 容器存储在 Docker 的容器列表中。</p>
+<h2 id="删除指定镜像和容器">删除指定镜像和容器</h2>
+<p>如果你想删除本地的 &ldquo;hello-world&rdquo; 镜像和容器，你可以按照以下步骤操作：</p>
+<ol>
+<li>
+<p>首先，你需要找到 &ldquo;hello-world&rdquo; 容器的 ID。你可以通过运行 <code>docker ps -a</code> 命令来查看所有的 Docker 容器，包括已经停止运行的。找到 &ldquo;hello-world&rdquo; 容器的 ID 后，你可以使用 <code>docker rm</code> 命令来删除它。</p>
+</li>
+<li>
+<p>然后，你需要找到 &ldquo;hello-world&rdquo; 镜像的 ID。你可以通过运行 <code>docker images</code> 命令来查看所有的 Docker 镜像。找到 &ldquo;hello-world&rdquo; 镜像的 ID 后，你可以使用 <code>docker rmi</code> 命令来删除它。</p>
+</li>
+</ol>
+<h3 id="删除指定镜像">删除指定镜像</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo docker rmi <span style="color:#f92672">[</span>image id<span style="color:#f92672">]</span>
+</span></span></code></pre></div><h3 id="删除指定容器">删除指定容器</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo docker rm <span style="color:#f92672">[</span>container id<span style="color:#f92672">]</span>
+</span></span></code></pre></div><h2 id="卸载">卸载</h2>
+<h3 id="卸载docker">卸载Docker</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo yum remove docker-ce docker-ce-cli containerd.io
+</span></span></code></pre></div><h3 id="删除所有镜像容器卷和自定义配置">删除所有镜像、容器、卷和自定义配置</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo rm -rf /var/lib/docker
+</span></span><span style="display:flex;"><span>sudo rm -rf /var/lib/containerd
+</span></span></code></pre></div>
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a>
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p>Previous post</p>
+                <a href="https://wnagdouble.github.io/post/http_toolkit_android/">Http Toolkit Android</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+            </div>
+        </section>
+    </div>
+
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2023 <a href="https://wnagdouble.github.io/">Double Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" target="_blank">Hugo</a> &
+        <a href="https://github.com/hotjuicew/hugo-JuiceBar" target="_blank">JuiceBar</a>
+    </span>
+    </div>
+  </footer></body>
+</html>
+
