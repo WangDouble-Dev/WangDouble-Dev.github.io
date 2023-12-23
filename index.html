@@ -179,7 +179,58 @@
   <div class="single-container column is-centered">
     <div class="archive" id="post-container">
       <header class="post-header">
-        <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/docker_install/">Docker安装</a></h1>
+        <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/todo/">待办事项</a></h1>
+       
+       
+      </header>
+      <div class="post-content">
+        <div class="excerpt post-summary">
+          待办事项 改进前后端分离PHP项目线上部署记录的Nginx配置文件。 使用Let&rsquo;s Encrypt安装一次SSL证书。 
+        </div>
+        
+        <div class="post-time-container">
+          <span class="post-time"> 2023-12-23 </span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</article>
+
+    
+        <article class="post">
+  <div class="single-container column is-centered">
+    <div class="archive" id="post-container">
+      <header class="post-header">
+        <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/online_deployment/">前后端分离PHP项目线上部署记录</a></h1>
+       
+       
+      </header>
+      <div class="post-content">
+        <div class="excerpt post-summary">
+          前后端分离PHP项目线上部署记录 前提是已具备基本LNMP环境。以后端的视角记录。主要是Nginx配置。
+背景 项目所在目录：/var/www/html/project_name/
+前端项目所在目录：/var/www/html/project_name/web/
+后端项目所在目录：/var/www/html/project_name/api/
+前端部署 在/var/www/html/project_name/web/下解压缩前端提供的压缩包。
+配置nginx server { listen 80; server_name domain.com www.domain.com; return 301 https://www.domain.com$request_uri; } server { listen 443 ssl http2; #【1】 server_name www.domain.com domain.com; # 域名设置 access_log /var/log/nginx/www.domain.com-access.log; error_log /var/log/nginx/www.domain.com-error.log; index index.html index.htm; # 日志目录 ssl_certificate /etc/letsencrypt/live/domain.com/fullchain.pem; ssl_certificate_key /etc/letsencrypt/live/domain.com/privkey.pem; client_max_body_size 5m; root /var/www/html/project_name/web; index index.html index.htm; location / { try_files $uri $uri/ /index.html;#【2】 } location ^~ /api/ {#【3】 add_header access-control-allow-origin *; proxy_pass http://127.0.0.1:8082;#将api路径下的请求转发到后端 proxy_connect_timeout 1800; proxy_read_timeout 1800; proxy_send_timeout 1800; proxy_set_header X-Forwarded-Host $host:$server_port; proxy_set_header X-Real-IP $remote_addr; proxy_set_header Origin $host:$server_port; proxy_set_header Referer $host:$server_port; proxy_set_header Accept-Encoding &#34;&#34;; # 去除/api/前缀 rewrite ^/api/(.
+        </div>
+        
+        <div class="post-time-container">
+          <span class="post-time"> 2023-12-23 </span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</article>
+
+    
+        <article class="post">
+  <div class="single-container column is-centered">
+    <div class="archive" id="post-container">
+      <header class="post-header">
+        <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/docker_install/">CentOS下安装Docker</a></h1>
        
        
       </header>
@@ -187,7 +238,8 @@
         <div class="excerpt post-summary">
           Docker入门安装&amp;使用 仅记录自己学习Docker的过程。安装的是Docker Engine不是Desktop。
 运行环境 操作系统：CentOS Linux 8 参考网站 官方CentOS下载Docker Engine指引 执行步骤 配置repository 用于安装和更新Docker。
-sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安装Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动Docker sudo systemctl start docker 测试Docker sudo docker run hello-world 当你执行 sudo docker run hello-world 命令时，Docker 会做以下几件事：
+sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安装Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动Docker sudo systemctl start docker 可用sudo systemctl status docker查看Docker状态。
+测试Docker sudo docker run hello-world 当你执行 sudo docker run hello-world 命令时，Docker 会做以下几件事：
 Docker 会在本地查找名为 &ldquo;hello-world&rdquo; 的镜像。 如果在本地没有找到，Docker 会去 Docker Hub（默认的 Docker 镜像仓库）下载 &ldquo;hello-world&rdquo; 镜像。 Docker 会创建一个新的容器，并在这个容器中运行 &ldquo;hello-world&rdquo; 镜像。 &ldquo;hello-world&rdquo; 镜像在下载后存储在 Docker 的镜像库中。你可以通过 docker images 命令查看所有的 Docker 镜像。
         </div>
         
