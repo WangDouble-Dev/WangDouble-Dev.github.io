@@ -23,6 +23,13 @@
       <description>Github配置 登录github网站，找到自己要集成giscus的仓库。点击Settings，找到Discussions 。勾选复选框。&#xA;具体操作可参考官方文档。&#xA;Giscus配置 打开giscus网站。在仓库输入框中，输入指定仓库的url地址，如下图。&#xA;如果Github仓库已配置好，会提示该仓库满足所有条件。往下滚动,找到启用 giscus，会自动生成script代码。&#xA;&amp;lt;script src=&amp;#34;https://giscus.app/client.js&amp;#34; data-repo=&amp;#34;owner/repo_name&amp;#34; data-repo-id=&amp;#34;R_key&amp;#34; data-category=&amp;#34;category_name&amp;#34; data-category-id=&amp;#34;DIC_key&amp;#34; data-mapping=&amp;#34;og:title&amp;#34; data-strict=&amp;#34;0&amp;#34; data-reactions-enabled=&amp;#34;1&amp;#34; data-emit-metadata=&amp;#34;0&amp;#34; data-input-position=&amp;#34;bottom&amp;#34; data-theme=&amp;#34;preferred_color_scheme&amp;#34; data-lang=&amp;#34;zh-CN&amp;#34; crossorigin=&amp;#34;anonymous&amp;#34; async&amp;gt; &amp;lt;/script&amp;gt; 将script添加到你的网站中即可。&#xA;番外 一开始没发现giscus网站会自动帮忙生成好script代码，所以repo-id和category-id是用 Github Explorer手动查询的。具体可看隔壁。</description>
     </item>
     <item>
+      <title>Todo</title>
+      <link>https://wnagdouble.github.io/todo/</link>
+      <pubDate>Sun, 24 Dec 2023 13:50:28 +0800</pubDate>
+      <guid>https://wnagdouble.github.io/todo/</guid>
+      <description> 集成Giscus 改进前后端分离PHP项目线上部署记录的Nginx配置文件。 使用Let&amp;rsquo;s Encrypt安装一次SSL证书。 </description>
+    </item>
+    <item>
       <title>前后端分离PHP项目线上部署记录</title>
       <link>https://wnagdouble.github.io/post/online_deployment/</link>
       <pubDate>Sat, 23 Dec 2023 18:05:16 +0800</pubDate>
