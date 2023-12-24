@@ -6,15 +6,8 @@
     <description>Recent content on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 23 Dec 2023 18:51:16 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 23 Dec 2023 18:05:16 +0800</lastBuildDate>
     <atom:link href="https://wnagdouble.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>待办事项</title>
-      <link>https://wnagdouble.github.io/post/todo/</link>
-      <pubDate>Sat, 23 Dec 2023 18:51:16 +0800</pubDate>
-      <guid>https://wnagdouble.github.io/post/todo/</guid>
-      <description>待办事项 改进前后端分离PHP项目线上部署记录的Nginx配置文件。 使用Let&amp;rsquo;s Encrypt安装一次SSL证书。 </description>
-    </item>
     <item>
       <title>前后端分离PHP项目线上部署记录</title>
       <link>https://wnagdouble.github.io/post/online_deployment/</link>
