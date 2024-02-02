@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Double Blog</title>
-    <link>https://wnagdouble.github.io/tags/</link>
+    <link>https://WangDouble-Dev.github.io/tags/</link>
     <description>Recent content in Tags on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 10 Dec 2023 13:42:49 +0800</lastBuildDate>
-    <atom:link href="https://wnagdouble.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://WangDouble-Dev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CentOS</title>
-      <link>https://wnagdouble.github.io/tags/centos/</link>
+      <link>https://WangDouble-Dev.github.io/tags/centos/</link>
       <pubDate>Sun, 10 Dec 2023 13:42:49 +0800</pubDate>
-      <guid>https://wnagdouble.github.io/tags/centos/</guid>
+      <guid>https://WangDouble-Dev.github.io/tags/centos/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>https://wnagdouble.github.io/tags/docker/</link>
+      <link>https://WangDouble-Dev.github.io/tags/docker/</link>
       <pubDate>Sun, 10 Dec 2023 13:42:49 +0800</pubDate>
-      <guid>https://wnagdouble.github.io/tags/docker/</guid>
+      <guid>https://WangDouble-Dev.github.io/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>Android</title>
-      <link>https://wnagdouble.github.io/tags/android/</link>
+      <link>https://WangDouble-Dev.github.io/tags/android/</link>
       <pubDate>Sat, 21 Oct 2023 23:03:03 +0800</pubDate>
-      <guid>https://wnagdouble.github.io/tags/android/</guid>
+      <guid>https://WangDouble-Dev.github.io/tags/android/</guid>
       <description></description>
     </item>
     <item>
       <title>Http Toolkit</title>
-      <link>https://wnagdouble.github.io/tags/http-toolkit/</link>
+      <link>https://WangDouble-Dev.github.io/tags/http-toolkit/</link>
       <pubDate>Sat, 21 Oct 2023 23:03:03 +0800</pubDate>
-      <guid>https://wnagdouble.github.io/tags/http-toolkit/</guid>
+      <guid>https://WangDouble-Dev.github.io/tags/http-toolkit/</guid>
       <description></description>
     </item>
   </channel>
