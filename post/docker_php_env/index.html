@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>CentOS下使用Docker搭建LNMP开发环境 | Double Blog</title>
+    <meta name="description"
+        content="运行环境 操作系统：CentOS Linux 8 Docker：Docker Engine - Community 24.0.7 参考网站 Docker如何打包软件 PHP镜像 MySQL镜像 Nginx镜像 Dockerfile reference 具体操作 方案1：使用现成的Docker Compose文件 拉取指定分支（lnump）的文件。
+git clone -b lnmp https://github.com/WangDouble-Dev/docker.git 进入docker-compose.yml所在目录，执行docker-compose up -d命令。-d参数表示后台运行。
+验证 浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。 浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。 命令行执行docker exec -it &lt;container_name_or_id&gt; mysql -uroot -p123456,&lt;container_name_or_id&gt;是你的Docker MySql服务的容器ID。 能够正常连接，说明mysql已经启动。 docker-compose.yml 字段说明 字段 说明 ports 端口映射，本机端口：docker端口。只能改本机。 volumes 文件夹映射，本机目录：docker目录。只能改本机 MYSQL_ROOT_PASSWORD mysql root用户默认密码 注意事项 由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：
+mysql-server 方案2：自己编写Dockerfile和docker-compose.yml文件 以后再写">
+    <link rel="canonical" href="https://WangDouble-Dev.github.io/post/docker_php_env/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://WangDouble-Dev.github.io/scss/style.min.6fd76f9357079467c4c99f3252388507d90341f626f93046f15e41f0fd47bf99.css">
+
+    <meta property="og:title" content="CentOS下使用Docker搭建LNMP开发环境" />
+<meta property="og:description" content="运行环境 操作系统：CentOS Linux 8 Docker：Docker Engine - Community 24.0.7 参考网站 Docker如何打包软件 PHP镜像 MySQL镜像 Nginx镜像 Dockerfile reference 具体操作 方案1：使用现成的Docker Compose文件 拉取指定分支（lnump）的文件。
+git clone -b lnmp https://github.com/WangDouble-Dev/docker.git 进入docker-compose.yml所在目录，执行docker-compose up -d命令。-d参数表示后台运行。
+验证 浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。 浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。 命令行执行docker exec -it &lt;container_name_or_id&gt; mysql -uroot -p123456,&lt;container_name_or_id&gt;是你的Docker MySql服务的容器ID。 能够正常连接，说明mysql已经启动。 docker-compose.yml 字段说明 字段 说明 ports 端口映射，本机端口：docker端口。只能改本机。 volumes 文件夹映射，本机目录：docker目录。只能改本机 MYSQL_ROOT_PASSWORD mysql root用户默认密码 注意事项 由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：
+mysql-server 方案2：自己编写Dockerfile和docker-compose.yml文件 以后再写" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://WangDouble-Dev.github.io/post/docker_php_env/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-12-10T20:51:53+08:00" />
+<meta property="article:modified_time" content="2023-12-10T20:51:53+08:00" /><meta property="og:site_name" content="Wang Double" />
+
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="CentOS下使用Docker搭建LNMP开发环境"/>
+<meta name="twitter:description" content="运行环境 操作系统：CentOS Linux 8 Docker：Docker Engine - Community 24.0.7 参考网站 Docker如何打包软件 PHP镜像 MySQL镜像 Nginx镜像 Dockerfile reference 具体操作 方案1：使用现成的Docker Compose文件 拉取指定分支（lnump）的文件。
+git clone -b lnmp https://github.com/WangDouble-Dev/docker.git 进入docker-compose.yml所在目录，执行docker-compose up -d命令。-d参数表示后台运行。
+验证 浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。 浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。 命令行执行docker exec -it &lt;container_name_or_id&gt; mysql -uroot -p123456,&lt;container_name_or_id&gt;是你的Docker MySql服务的容器ID。 能够正常连接，说明mysql已经启动。 docker-compose.yml 字段说明 字段 说明 ports 端口映射，本机端口：docker端口。只能改本机。 volumes 文件夹映射，本机目录：docker目录。只能改本机 MYSQL_ROOT_PASSWORD mysql root用户默认密码 注意事项 由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：
+mysql-server 方案2：自己编写Dockerfile和docker-compose.yml文件 以后再写"/>
+
+    
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo">
+                    <h1>Double Blog</h1>
+                </span>
+            </a>
+
+            
+            <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://WangDouble-Dev.github.io/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                <a href="/post" class="navbar-item">Blog</a>
+                
+                <a href="/categories" class="navbar-item">Categories</a>
+                
+                <a href="/todo" class="navbar-item">Todo</a>
+                
+            </div>
+
+        </div>
+        <div class="search">
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            <a id="search-btn" style="display: inline-block;" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1">CentOS下使用Docker搭建LNMP开发环境</h1>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/profile.jpg" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Wang Double</p>
+                            <p><time>December 10, 2023</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-categories-container">
+                    <a href="/categories/docker">Docker</a>
+                </div>
+            </div>
+        </div>
+        <div class="content article-content">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <h2 id="运行环境">运行环境</h2>
+<ul>
+<li>操作系统：CentOS Linux 8</li>
+<li>Docker：Docker Engine - Community 24.0.7</li>
+</ul>
+<h2 id="参考网站">参考网站</h2>
+<ul>
+<li><a href="https://docs.docker.com/build/building/packaging/">Docker如何打包软件</a></li>
+<li><a href="https://hub.docker.com/_/php">PHP镜像</a></li>
+<li><a href="https://hub.docker.com/_/mysql">MySQL镜像</a></li>
+<li><a href="https://hub.docker.com/_/nginx">Nginx镜像</a></li>
+<li><a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference</a></li>
+</ul>
+<h2 id="具体操作">具体操作</h2>
+<h3 id="方案1使用现成的docker-compose文件">方案1：使用现成的Docker Compose文件</h3>
+<p>拉取指定分支（lnump）的文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone -b lnmp https://github.com/WangDouble-Dev/docker.git
+</span></span></code></pre></div><p>进入<code>docker-compose.yml</code>所在目录，执行<code>docker-compose up -d</code>命令。<code>-d</code>参数表示后台运行。</p>
+<h4 id="验证">验证</h4>
+<ul>
+<li>浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。</li>
+<li>浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。</li>
+<li>命令行执行<code>docker exec -it &lt;container_name_or_id&gt; mysql -uroot -p123456</code>,&lt;container_name_or_id&gt;是你的Docker MySql服务的容器ID。
+能够正常连接，说明mysql已经启动。</li>
+</ul>
+<h4 id="docker-composeyml-字段说明">docker-compose.yml 字段说明</h4>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ports</td>
+<td>端口映射，本机端口：docker端口。只能改本机。</td>
+</tr>
+<tr>
+<td>volumes</td>
+<td>文件夹映射，本机目录：docker目录。只能改本机</td>
+</tr>
+<tr>
+<td>MYSQL_ROOT_PASSWORD</td>
+<td>mysql root用户默认密码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="注意事项">注意事项</h4>
+<p>由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#ae81ff">mysql-server</span>
+</span></span></code></pre></div><h3 id="方案2自己编写dockerfile和docker-composeyml文件">方案2：自己编写Dockerfile和docker-compose.yml文件</h3>
+<p>以后再写</p>
+
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a><hr style="border-top: 1px solid #EEEEEE;">
+<div id="comment"></div>
+<script>
+    const getStoredTheme = () => localStorage.getItem("theme") === "dark" ? "dark" : "light";
+
+    const setGiscusTheme = () => {
+        const sendMessage = (message) => {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (iframe) {
+                iframe.contentWindow.postMessage({giscus: message}, 'https://giscus.app');
+            }
+        }
+        sendMessage({setConfig: {theme: getStoredTheme()}})
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const giscusAttributes = {
+            "src": "https://giscus.app/client.js",
+            "data-repo": "wnagDouble\/wnagdouble.github.io",
+            "data-repo-id": "R_kgDOKL5y6g",
+            "data-category": "Announcements",
+            "data-category-id": "DIC_kwDOKL5y6s4Cb9eJ",
+            "data-mapping": "og:title",
+            "data-reactions-enabled": "1",
+            "data-emit-metadata": "0",
+            "data-input-position": "bottom",
+            "data-theme": getStoredTheme(),
+            "data-lang": "zh-CN",
+            "data-loading": "lazy",
+            "crossorigin": "anonymous",
+        };
+
+        
+        const giscusScript = document.createElement("script");
+        Object.entries(giscusAttributes).forEach(
+            ([key, value]) => giscusScript.setAttribute(key, value));
+        document.getElementById("comment").appendChild(giscusScript);
+
+        
+        const themeToggle = document.querySelector(".theme-toggle");
+        if (themeToggle) {
+            themeToggle.addEventListener("click", setGiscusTheme);
+        }
+    });
+
+</script>
+
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p>Previous post</p>
+                <a href="https://WangDouble-Dev.github.io/post/docker_install/">CentOS下安装Docker</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+                <p>Next post</p>
+                <a href="https://WangDouble-Dev.github.io/post/online_deployment/">前后端分离PHP项目线上部署记录</a>
+                
+            </div>
+        </section>
+    </div>
+
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2024 <a href="https://WangDouble-Dev.github.io/">Double Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" target="_blank">Hugo</a> &
+        <a href="https://github.com/hotjuicew/hugo-JuiceBar" target="_blank">JuiceBar</a>
+    </span>
+    </div>
+  </footer></body>
+</html>
+

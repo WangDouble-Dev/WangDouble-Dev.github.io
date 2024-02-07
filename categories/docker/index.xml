@@ -6,8 +6,15 @@
     <description>Recent content in Docker on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 10 Dec 2023 13:42:49 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 10 Dec 2023 20:51:53 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CentOS下使用Docker搭建LNMP开发环境</title>
+      <link>https://WangDouble-Dev.github.io/post/docker_php_env/</link>
+      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/docker_php_env/</guid>
+      <description>运行环境 操作系统：CentOS Linux 8 Docker：Docker Engine - Community 24.0.7 参考网站 Docker如何打包软件 PHP镜像 MySQL镜像 Nginx镜像 Dockerfile reference 具体操作 方案1：使用现成的Docker Compose文件 拉取指定分支（lnump）的文件。&#xA;git clone -b lnmp https://github.com/WangDouble-Dev/docker.git 进入docker-compose.yml所在目录，执行docker-compose up -d命令。-d参数表示后台运行。&#xA;验证 浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。 浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。 命令行执行docker exec -it &amp;lt;container_name_or_id&amp;gt; mysql -uroot -p123456,&amp;lt;container_name_or_id&amp;gt;是你的Docker MySql服务的容器ID。 能够正常连接，说明mysql已经启动。 docker-compose.yml 字段说明 字段 说明 ports 端口映射，本机端口：docker端口。只能改本机。 volumes 文件夹映射，本机目录：docker目录。只能改本机 MYSQL_ROOT_PASSWORD mysql root用户默认密码 注意事项 由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：&#xA;mysql-server 方案2：自己编写Dockerfile和docker-compose.yml文件 以后再写</description>
+    </item>
     <item>
       <title>CentOS下安装Docker</title>
       <link>https://WangDouble-Dev.github.io/post/docker_install/</link>

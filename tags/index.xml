@@ -6,20 +6,27 @@
     <description>Recent content in Tags on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 10 Dec 2023 13:42:49 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 10 Dec 2023 20:51:53 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CentOS</title>
       <link>https://WangDouble-Dev.github.io/tags/centos/</link>
-      <pubDate>Sun, 10 Dec 2023 13:42:49 +0800</pubDate>
+      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/tags/centos/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
       <link>https://WangDouble-Dev.github.io/tags/docker/</link>
-      <pubDate>Sun, 10 Dec 2023 13:42:49 +0800</pubDate>
+      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/tags/docker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PHP</title>
+      <link>https://WangDouble-Dev.github.io/tags/php/</link>
+      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/tags/php/</guid>
       <description></description>
     </item>
     <item>
