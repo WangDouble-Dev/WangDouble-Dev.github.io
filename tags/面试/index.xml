@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>PHP on Double Blog</title>
-    <link>https://WangDouble-Dev.github.io/tags/php/</link>
-    <description>Recent content in PHP on Double Blog</description>
+    <title>面试 on Double Blog</title>
+    <link>https://WangDouble-Dev.github.io/tags/%E9%9D%A2%E8%AF%95/</link>
+    <description>Recent content in 面试 on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Wed, 07 Feb 2024 21:09:40 +0800</lastBuildDate>
-    <atom:link href="https://WangDouble-Dev.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://WangDouble-Dev.github.io/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PHP面试准备</title>
       <link>https://WangDouble-Dev.github.io/post/phper/</link>
       <pubDate>Wed, 07 Feb 2024 21:09:40 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/post/phper/</guid>
       <description>PHP include和require的区别 1.include 引入文件的时候，如果碰到错误，会给出提示，并继续运行下边的代码。require 引入文件的时候，如果碰到错误，会给出提示，并停止运行下边的代码。&#xA;2.include() 执行时需要引用的文件每次都要进行读取和评估，require() 执行时需要引用的文件只处理一次（实际上执行时需要引用的文件内容替换了 require() 语句）可以看出若有包含这些指令之一的代码和可能执行多次的代码，则使用 require() 效率比较高，若每次执行代码时相读取不同的文件或者有通过一组文件叠代的循环，就使用 include()，可以给想要包括的文件名设置变量，当参数为 include() 时使用这个变量。&#xA;3.incluce 在用到时加载；require 在一开始就加载；_once 后缀表示已加载的不加载。&#xA;预定义变量 $GLOBALS — 引用全局作用域中可用的全部变量&#xA;$_SERVER — 服务器和执行环境信息&#xA;$_GET — HTTP GET 变量&#xA;$_POST — HTTP POST 变量&#xA;$_FILES — HTTP 文件上传变量&#xA;$_REQUEST — HTTP Request 变量&#xA;$_SESSION — Session 变量&#xA;$_ENV — 环境变量&#xA;$_COOKIE — HTTP Cookies&#xA;$php_errormsg — 前一个错误信息&#xA;$http_response_header — HTTP 响应头&#xA;$argc — 传递给脚本的参数数目&#xA;$argv — 传递给脚本的参数数组&#xA;官方文档</description>
-    </item>
-    <item>
-      <title>CentOS下使用Docker搭建LNMP开发环境</title>
-      <link>https://WangDouble-Dev.github.io/post/docker_php_env/</link>
-      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/post/docker_php_env/</guid>
-      <description>运行环境 操作系统：CentOS Linux 8 Docker：Docker Engine - Community 24.0.7 参考网站 Docker如何打包软件 PHP镜像 MySQL镜像 Nginx镜像 Dockerfile reference 具体操作 方案1：使用现成的Docker Compose文件 拉取指定分支（lnump）的文件。&#xA;git clone -b lnmp https://github.com/WangDouble-Dev/docker.git 进入docker-compose.yml所在目录，执行docker-compose up -d命令。-d参数表示后台运行。&#xA;验证 浏览器访问 http://localhost:8080 ,显示nginx 403 Forbidden。说明nginx已经启动。 浏览器访问 http://localhost:8080/test.php ,显示phpinfo信息。说明php已经启动。 命令行执行docker exec -it &amp;lt;container_name_or_id&amp;gt; mysql -uroot -p123456,&amp;lt;container_name_or_id&amp;gt;是你的Docker MySql服务的容器ID。 能够正常连接，说明mysql已经启动。 docker-compose.yml 字段说明 字段 说明 ports 端口映射，本机端口：docker端口。只能改本机。 volumes 文件夹映射，本机目录：docker目录。只能改本机 MYSQL_ROOT_PASSWORD mysql root用户默认密码 注意事项 由于代码跑在docker里，所以 localhost 和 127.0.0.1不再可用。如需要连接mysql，应使用如下地址：&#xA;mysql-server 方案2：自己编写Dockerfile和docker-compose.yml文件 以后再写</description>
     </item>
   </channel>
 </rss>

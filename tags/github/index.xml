@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on Double Blog</title>
+    <link>https://WangDouble-Dev.github.io/tags/github/</link>
+    <description>Recent content in Github on Double Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 24 Dec 2023 15:00:53 +0800</lastBuildDate>
+    <atom:link href="https://WangDouble-Dev.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Github GraphQL API</title>
+      <link>https://WangDouble-Dev.github.io/post/github_explorer/</link>
+      <pubDate>Sun, 24 Dec 2023 15:00:53 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/github_explorer/</guid>
+      <description>Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。&#xA;比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。&#xA;假设你的仓库url地址是https://github.com/owner/repo_name 在Github GraphQL API资源管理器中输入如下查询语句。&#xA;{ repository(owner: &amp;#34;owner&amp;#34;, name: &amp;#34;repo_name&amp;#34;) { id name discussionCategories(first:1) { nodes{ id name } pageInfo{ hasNextPage hasPreviousPage } totalCount } } } 就会得到如下结果。&#xA;{ &amp;#34;data&amp;#34;: { &amp;#34;repository&amp;#34;: { &amp;#34;id&amp;#34;: &amp;#34;R_key&amp;#34;, &amp;#34;name&amp;#34;: &amp;#34;repo_name&amp;#34;, &amp;#34;discussionCategories&amp;#34;: { &amp;#34;nodes&amp;#34;: [ { &amp;#34;id&amp;#34;: &amp;#34;DIC_key&amp;#34;, &amp;#34;name&amp;#34;: &amp;#34;Announcements&amp;#34; } ], &amp;#34;pageInfo&amp;#34;: { &amp;#34;hasNextPage&amp;#34;: true, &amp;#34;hasPreviousPage&amp;#34;: false }, &amp;#34;totalCount&amp;#34;: 6 } } } } 更多其他信息查询及资源管理器的使用可参考官方文档。</description>
+    </item>
+    <item>
+      <title>Github Pages 评论系统 Giscus</title>
+      <link>https://WangDouble-Dev.github.io/post/giscus/</link>
+      <pubDate>Sun, 24 Dec 2023 14:30:08 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/giscus/</guid>
+      <description>Github配置 登录github网站，找到自己要集成giscus的仓库。点击Settings，找到Discussions 。勾选复选框。&#xA;具体操作可参考官方文档。&#xA;Giscus配置 打开giscus网站。在仓库输入框中，输入指定仓库的url地址，如下图。&#xA;如果Github仓库已配置好，会提示该仓库满足所有条件。往下滚动,找到启用 giscus，会自动生成script代码。&#xA;&amp;lt;script src=&amp;#34;https://giscus.app/client.js&amp;#34; data-repo=&amp;#34;owner/repo_name&amp;#34; data-repo-id=&amp;#34;R_key&amp;#34; data-category=&amp;#34;category_name&amp;#34; data-category-id=&amp;#34;DIC_key&amp;#34; data-mapping=&amp;#34;og:title&amp;#34; data-strict=&amp;#34;0&amp;#34; data-reactions-enabled=&amp;#34;1&amp;#34; data-emit-metadata=&amp;#34;0&amp;#34; data-input-position=&amp;#34;bottom&amp;#34; data-theme=&amp;#34;preferred_color_scheme&amp;#34; data-lang=&amp;#34;zh-CN&amp;#34; crossorigin=&amp;#34;anonymous&amp;#34; async&amp;gt; &amp;lt;/script&amp;gt; 将script添加到你的网站中即可。&#xA;番外 一开始没发现giscus网站会自动帮忙生成好script代码，所以repo-id和category-id是用 Github Explorer手动查询的。具体可看隔壁。</description>
+    </item>
+  </channel>
+</rss>

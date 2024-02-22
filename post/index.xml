@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 24 Dec 2023 15:00:53 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 07 Feb 2024 21:09:40 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PHP面试准备</title>
+      <link>https://WangDouble-Dev.github.io/post/phper/</link>
+      <pubDate>Wed, 07 Feb 2024 21:09:40 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/phper/</guid>
+      <description>PHP include和require的区别 1.include 引入文件的时候，如果碰到错误，会给出提示，并继续运行下边的代码。require 引入文件的时候，如果碰到错误，会给出提示，并停止运行下边的代码。&#xA;2.include() 执行时需要引用的文件每次都要进行读取和评估，require() 执行时需要引用的文件只处理一次（实际上执行时需要引用的文件内容替换了 require() 语句）可以看出若有包含这些指令之一的代码和可能执行多次的代码，则使用 require() 效率比较高，若每次执行代码时相读取不同的文件或者有通过一组文件叠代的循环，就使用 include()，可以给想要包括的文件名设置变量，当参数为 include() 时使用这个变量。&#xA;3.incluce 在用到时加载；require 在一开始就加载；_once 后缀表示已加载的不加载。&#xA;预定义变量 $GLOBALS — 引用全局作用域中可用的全部变量&#xA;$_SERVER — 服务器和执行环境信息&#xA;$_GET — HTTP GET 变量&#xA;$_POST — HTTP POST 变量&#xA;$_FILES — HTTP 文件上传变量&#xA;$_REQUEST — HTTP Request 变量&#xA;$_SESSION — Session 变量&#xA;$_ENV — 环境变量&#xA;$_COOKIE — HTTP Cookies&#xA;$php_errormsg — 前一个错误信息&#xA;$http_response_header — HTTP 响应头&#xA;$argc — 传递给脚本的参数数目&#xA;$argv — 传递给脚本的参数数组&#xA;官方文档</description>
+    </item>
     <item>
       <title>Github GraphQL API</title>
       <link>https://WangDouble-Dev.github.io/post/github_explorer/</link>
