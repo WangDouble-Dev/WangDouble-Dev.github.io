@@ -6,8 +6,15 @@
     <description>Recent content on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 07 Feb 2024 21:09:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 25 Feb 2024 13:24:05 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>IDE|PHPStorm Power Save Mode模式开启导致代码不提示及自动补全失效</title>
+      <link>https://WangDouble-Dev.github.io/post/ide_power_save_mode/</link>
+      <pubDate>Sun, 25 Feb 2024 13:24:05 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/ide_power_save_mode/</guid>
+      <description> 某天用PHPStorm写代码的时候，代码突然不提示了,不会自动补全及导入类了。代码编写速度直线下降。&#xA;检查了很多设置，最后发现是IDE的Power Save Mode模式开启了。&#xA;通常，IDE（集成开发环境）的省电模式是为了在使用电池供电时减少系统资源的使用，以延长电池寿命。省电模式通常涉及一系列设置和调整，以降低软件的性能需求，从而减少能耗。这些调整可能包括：&#xA;自动保存设置： 将自动保存的频率调整为更长的时间间隔，以减少IO操作。&#xA;自动代码分析： 降低代码分析的频率或关闭一些耗费资源的代码检查功能。&#xA;自动代码补全： 可能会降低或禁用自动代码补全功能，因为它通常需要消耗一定的计算资源。&#xA;实时语法检查： 减少或关闭实时语法检查，以降低对系统资源的占用。&#xA;背景任务： 延迟或限制一些后台任务的执行，以减少对CPU和内存的需求。&#xA;界面动画和效果： 禁用一些界面动画和特效，以减少对图形处理单元（GPU）的负担。&#xA;插件管理： 停用不必要的插件，因为一些插件可能在后台执行任务，增加了系统负担。&#xA;缓存策略： 调整缓存策略，减少缓存刷新的频率。&#xA;关闭省电模式方法：&#xA;通过点击IDE的右下角的电源图标，关闭Power Save Mode模式。 也可以通过File -&amp;gt; Power Save Mode菜单项来切换Power Save Mode模式。 参考文档：&#xA;PHPStorm禁用自动突出显示用法 </description>
+    </item>
     <item>
       <title>PHP面试准备</title>
       <link>https://WangDouble-Dev.github.io/post/phper/</link>

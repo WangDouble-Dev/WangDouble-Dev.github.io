@@ -6,8 +6,15 @@
     <description>Recent content in Categories on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 07 Feb 2024 21:09:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 25 Feb 2024 13:24:05 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>其它</title>
+      <link>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</link>
+      <pubDate>Sun, 25 Feb 2024 13:24:05 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</guid>
+      <description></description>
+    </item>
     <item>
       <title>PHP</title>
       <link>https://WangDouble-Dev.github.io/categories/php/</link>
@@ -34,13 +41,6 @@
       <link>https://WangDouble-Dev.github.io/categories/docker/</link>
       <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/categories/docker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>其它</title>
-      <link>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</link>
-      <pubDate>Sat, 21 Oct 2023 23:03:03 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</guid>
       <description></description>
     </item>
     <item>

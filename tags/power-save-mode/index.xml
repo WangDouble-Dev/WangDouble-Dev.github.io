@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>其它 on Double Blog</title>
-    <link>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</link>
-    <description>Recent content in 其它 on Double Blog</description>
+    <title>Power Save Mode on Double Blog</title>
+    <link>https://WangDouble-Dev.github.io/tags/power-save-mode/</link>
+    <description>Recent content in Power Save Mode on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 25 Feb 2024 13:24:05 +0800</lastBuildDate>
-    <atom:link href="https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://WangDouble-Dev.github.io/tags/power-save-mode/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>IDE|PHPStorm Power Save Mode模式开启导致代码不提示及自动补全失效</title>
       <link>https://WangDouble-Dev.github.io/post/ide_power_save_mode/</link>
       <pubDate>Sun, 25 Feb 2024 13:24:05 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/post/ide_power_save_mode/</guid>
       <description> 某天用PHPStorm写代码的时候，代码突然不提示了,不会自动补全及导入类了。代码编写速度直线下降。&#xA;检查了很多设置，最后发现是IDE的Power Save Mode模式开启了。&#xA;通常，IDE（集成开发环境）的省电模式是为了在使用电池供电时减少系统资源的使用，以延长电池寿命。省电模式通常涉及一系列设置和调整，以降低软件的性能需求，从而减少能耗。这些调整可能包括：&#xA;自动保存设置： 将自动保存的频率调整为更长的时间间隔，以减少IO操作。&#xA;自动代码分析： 降低代码分析的频率或关闭一些耗费资源的代码检查功能。&#xA;自动代码补全： 可能会降低或禁用自动代码补全功能，因为它通常需要消耗一定的计算资源。&#xA;实时语法检查： 减少或关闭实时语法检查，以降低对系统资源的占用。&#xA;背景任务： 延迟或限制一些后台任务的执行，以减少对CPU和内存的需求。&#xA;界面动画和效果： 禁用一些界面动画和特效，以减少对图形处理单元（GPU）的负担。&#xA;插件管理： 停用不必要的插件，因为一些插件可能在后台执行任务，增加了系统负担。&#xA;缓存策略： 调整缓存策略，减少缓存刷新的频率。&#xA;关闭省电模式方法：&#xA;通过点击IDE的右下角的电源图标，关闭Power Save Mode模式。 也可以通过File -&amp;gt; Power Save Mode菜单项来切换Power Save Mode模式。 参考文档：&#xA;PHPStorm禁用自动突出显示用法 </description>
-    </item>
-    <item>
-      <title>使用Http Toolkit Android抓包的简易方法</title>
-      <link>https://WangDouble-Dev.github.io/post/http_toolkit_android/</link>
-      <pubDate>Sat, 21 Oct 2023 23:03:03 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/post/http_toolkit_android/</guid>
-      <description>主要步骤 1. 在电脑上安装Http Toolkit Http Toolkit Windows端下载地址&#xA;2. 在电脑上安装夜神模拟器 夜神模拟器下载地址&#xA;3. 下载Http Toolkit Android端 可以在谷歌应用商店下载。不支持谷歌应用商店的手机可以在APKPure下载。&#xA;4. 在夜神模拟器中安装Http Toolkit Android端 将下载好的apk文件拖入夜神模拟器中即可。&#xA;5. 开始抓包 在电脑上打开Http Toolkit，选择Android Device via ADB。 然后切换到夜神模拟器中，打开Http Toolkit，会提示是否信任证书，直接点击确定。就能获取到抓包数据了。 常见问题 1. 为什么不用Http Toolkit的Android Device via QR Code？使用起来更便捷，也不用安装夜神模拟器。 因为现在手机的安卓版本普遍较高。在Android 7.0及以上的系统中，就算你安装了Http Toolkit的证书，手机内的应用也不会信任它。而使用Android Device via ADB能避免这个问题。详情请看这里。&#xA;2. 一定要用夜神模拟器吗？其他安卓模拟器不行吗？ 也可以。只要打开你的安卓模拟器之后，Android Device via ADB图标正常显示就可以使用。&#xA;图标这样是不能使用的。&#xA;注意事项 要模拟器开着的情况下，Http Toolkit的Android Device via ADB图标才会正常显示。 要使用Android Device via ADB，设备是需要Root过的。所以最好选择的安卓模拟器是支持Root设置或支持ADB的。这也是我选择夜神模拟器的原因。 其他注意事项请看这里。 </description>
     </item>
   </channel>
 </rss>
