@@ -179,6 +179,39 @@
   <div class="single-container column is-centered">
     <div class="archive" id="post-container">
       <header class="post-header">
+        <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/quick_look/">Windows系统下隐藏QuickLook在系统托盘中的图标</a></h1>
+       
+       
+      </header>
+      <div class="post-content">
+        <div class="excerpt post-summary">
+          想要在Windows电脑上实现像MacBook一样，空格预览大多数文件的功能，所以在微软应用商店上下载了QuickLook。在评论中看到可在系统托盘（通知区域） 中隐藏QuickLook图标，故记录一下。
+在C:Users\用户名\AppData\Roaming\pooi.moe\QuickLook找到QuickLook.config。
+记事本打开配置文件并在&lt;Settings&gt;&lt;/Settings&gt;里添加&lt;ShowTrayIcon&gt;False&lt;/ShowTrayIcon&gt;后保存，再重启软件右下角终于没有图标了。
+恢复可删除添加内容或值False改为True。
+有部分人的目录可能是C:\Users\用户名\AppData\Local\Packages\21090PaddyXu.QuickLook_egxr34yet59cg\LocalCache\Roaming\pooi.moe\QuickLook。
+改完后的QuickLook.config文件如下
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt; &lt;Settings&gt; &lt;LastUpdateTicks&gt;638584839751137378&lt;/LastUpdateTicks&gt; &lt;ShowTrayIcon&gt;False&lt;/ShowTrayIcon&gt; &lt;/Settings&gt; 补充说明
+在 Windows 系统中，系统托盘（通知区域）位于任务栏的右侧，包含了各种系统和应用程序的图标，这些图标可以提供通知、快速访问应用程序的设置或其他功能。 &lt;ShowTrayIcon&gt;False&lt;/ShowTrayIcon&gt; 在 Windows 系统中的作用通常如下：
+隐藏托盘图标：如果某个应用程序的配置文件包含 &lt;ShowTrayIcon&gt;False&lt;/ShowTrayIcon&gt;，那么当该应用程序运行时，它不会在系统托盘中显示其图标。这意味着用户将无法通过系统托盘直接访问该应用程序的快捷功能或查看其状态。
+减少托盘图标数量：某些用户或系统管理员可能希望减少系统托盘中的图标数量，以保持任务栏的简洁和清晰。因此，可以通过设置 &lt;ShowTrayIcon&gt;False&lt;/ShowTrayIcon&gt; 来实现这一目的。
+配置文件：这一设置通常出现在应用程序的配置文件（如 .xml、.config 或 .ini 文件）中。开发人员或高级用户可以手动编辑这些文件，以控制应用程序的行为。
+        </div>
+        
+        <div class="post-time-container">
+          <span class="post-time"> 2024-08-05 </span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</article>
+
+    
+        <article class="post">
+  <div class="single-container column is-centered">
+    <div class="archive" id="post-container">
+      <header class="post-header">
         <h1 class="post-title hover-underline-animation"><a class="post-link" href="/post/ide_power_save_mode/">IDE|PHPStorm Power Save Mode模式开启导致代码不提示及自动补全失效</a></h1>
        
        

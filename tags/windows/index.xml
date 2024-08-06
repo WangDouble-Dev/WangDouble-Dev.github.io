@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows on Double Blog</title>
+    <link>https://WangDouble-Dev.github.io/tags/windows/</link>
+    <description>Recent content in Windows on Double Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 05 Aug 2024 20:51:39 +0800</lastBuildDate>
+    <atom:link href="https://WangDouble-Dev.github.io/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows系统下隐藏QuickLook在系统托盘中的图标</title>
+      <link>https://WangDouble-Dev.github.io/post/quick_look/</link>
+      <pubDate>Mon, 05 Aug 2024 20:51:39 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/quick_look/</guid>
+      <description>想要在Windows电脑上实现像MacBook一样，空格预览大多数文件的功能，所以在微软应用商店上下载了QuickLook。在评论中看到可在系统托盘（通知区域） 中隐藏QuickLook图标，故记录一下。&#xA;在C:Users\用户名\AppData\Roaming\pooi.moe\QuickLook找到QuickLook.config。&#xA;记事本打开配置文件并在&amp;lt;Settings&amp;gt;&amp;lt;/Settings&amp;gt;里添加&amp;lt;ShowTrayIcon&amp;gt;False&amp;lt;/ShowTrayIcon&amp;gt;后保存，再重启软件右下角终于没有图标了。&#xA;恢复可删除添加内容或值False改为True。&#xA;有部分人的目录可能是C:\Users\用户名\AppData\Local\Packages\21090PaddyXu.QuickLook_egxr34yet59cg\LocalCache\Roaming\pooi.moe\QuickLook。&#xA;改完后的QuickLook.config文件如下&#xA;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;utf-8&amp;#34;?&amp;gt; &amp;lt;Settings&amp;gt; &amp;lt;LastUpdateTicks&amp;gt;638584839751137378&amp;lt;/LastUpdateTicks&amp;gt; &amp;lt;ShowTrayIcon&amp;gt;False&amp;lt;/ShowTrayIcon&amp;gt; &amp;lt;/Settings&amp;gt; 补充说明&#xA;在 Windows 系统中，系统托盘（通知区域）位于任务栏的右侧，包含了各种系统和应用程序的图标，这些图标可以提供通知、快速访问应用程序的设置或其他功能。 &amp;lt;ShowTrayIcon&amp;gt;False&amp;lt;/ShowTrayIcon&amp;gt; 在 Windows 系统中的作用通常如下：&#xA;隐藏托盘图标：如果某个应用程序的配置文件包含 &amp;lt;ShowTrayIcon&amp;gt;False&amp;lt;/ShowTrayIcon&amp;gt;，那么当该应用程序运行时，它不会在系统托盘中显示其图标。这意味着用户将无法通过系统托盘直接访问该应用程序的快捷功能或查看其状态。&#xA;减少托盘图标数量：某些用户或系统管理员可能希望减少系统托盘中的图标数量，以保持任务栏的简洁和清晰。因此，可以通过设置 &amp;lt;ShowTrayIcon&amp;gt;False&amp;lt;/ShowTrayIcon&amp;gt; 来实现这一目的。&#xA;配置文件：这一设置通常出现在应用程序的配置文件（如 .xml、.config 或 .ini 文件）中。开发人员或高级用户可以手动编辑这些文件，以控制应用程序的行为。</description>
+    </item>
+  </channel>
+</rss>
