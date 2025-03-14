@@ -6,8 +6,15 @@
     <description>Recent content on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 05 Aug 2024 20:51:39 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Mar 2025 17:07:01 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>资源</title>
+      <link>https://WangDouble-Dev.github.io/post/resource/</link>
+      <pubDate>Fri, 14 Mar 2025 17:07:01 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/resource/</guid>
+      <description>产品 Ant Design&#xA;网站建设 Hugo</description>
+    </item>
     <item>
       <title>Windows系统下隐藏QuickLook在系统托盘中的图标</title>
       <link>https://WangDouble-Dev.github.io/post/quick_look/</link>
@@ -21,13 +28,6 @@
       <pubDate>Sun, 25 Feb 2024 13:24:05 +0800</pubDate>
       <guid>https://WangDouble-Dev.github.io/post/ide_power_save_mode/</guid>
       <description> 某天用PHPStorm写代码的时候，代码突然不提示了,不会自动补全及导入类了。代码编写速度直线下降。&#xA;检查了很多设置，最后发现是IDE的Power Save Mode模式开启了。&#xA;通常，IDE（集成开发环境）的省电模式是为了在使用电池供电时减少系统资源的使用，以延长电池寿命。省电模式通常涉及一系列设置和调整，以降低软件的性能需求，从而减少能耗。这些调整可能包括：&#xA;自动保存设置： 将自动保存的频率调整为更长的时间间隔，以减少IO操作。&#xA;自动代码分析： 降低代码分析的频率或关闭一些耗费资源的代码检查功能。&#xA;自动代码补全： 可能会降低或禁用自动代码补全功能，因为它通常需要消耗一定的计算资源。&#xA;实时语法检查： 减少或关闭实时语法检查，以降低对系统资源的占用。&#xA;背景任务： 延迟或限制一些后台任务的执行，以减少对CPU和内存的需求。&#xA;界面动画和效果： 禁用一些界面动画和特效，以减少对图形处理单元（GPU）的负担。&#xA;插件管理： 停用不必要的插件，因为一些插件可能在后台执行任务，增加了系统负担。&#xA;缓存策略： 调整缓存策略，减少缓存刷新的频率。&#xA;关闭省电模式方法：&#xA;通过点击IDE的右下角的电源图标，关闭Power Save Mode模式。 也可以通过File -&amp;gt; Power Save Mode菜单项来切换Power Save Mode模式。 参考文档：&#xA;PHPStorm禁用自动突出显示用法 </description>
-    </item>
-    <item>
-      <title>PHP面试准备</title>
-      <link>https://WangDouble-Dev.github.io/post/phper/</link>
-      <pubDate>Wed, 07 Feb 2024 21:09:40 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/post/phper/</guid>
-      <description>PHP include和require的区别 在PHP中，include和require都是用于在代码中包含文件的语句，但它们有一些重要的区别。&#xA;错误处理方式： include：如果文件未找到或者包含过程中出现错误，include 会产生一个警告，但脚本会继续执行。 require：如果文件未找到或者包含过程中出现错误，require 会产生一个致命错误，并停止脚本的执行。 返回值： include：如果包含文件成功，include 语句返回 1；如果失败，返回 FALSE。 require：如果包含文件成功，require 语句返回 1；如果失败，返回 FALSE。 使用场景： include 用于包含可选的文件，即使文件不存在或包含失败，脚本仍然会继续执行。 require 用于包含必须的文件，如果文件不存在或包含失败，脚本会停止执行，这在必须依赖某个文件的情况下很有用。 总的来说，选择使用 include 还是 require 取决于你对脚本执行的期望和对错误处理的需求。如果文件的存在对程序的正常运行不是必须的，那么使用 include 可能更合适。如果文件的存在对程序是必须的，那么使用 require 会更适合，因为它能在必要时中止脚本的执行。 预定义变量 点击此处查看&#xA;使用 PHP 函数对变量 $x 进行比较 types.comparisons.php&#xA;PHP支持多线程吗？ PHP 本身的标准版本并不直接支持真正的多线程。PHP 的主要运行模型是基于请求-响应的，每个请求都在一个独立的进程中处理。在这个模型下，PHP 是单线程运行的，每个请求都有自己的上下文，不共享数据。&#xA;然而，PHP 提供了一些扩展和库，以支持并发编程或者异步操作，使得可以在某种程度上模拟多线程的效果。以下是一些与并发和异步相关的 PHP 扩展和库：&#xA;Swoole： 是一个基于 C 语言开发的高性能异步、协程并发网络通信引擎。Swoole 提供了协程和异步 I/O 支持，可以用于编写高并发的服务器程序。 虽然上述方法可以用于处理并发任务，但需要注意的是，PHP 不是为真正的多线程编程而设计的。对于需要更严格的多线程控制和共享内存等需求，其他语言如 Java 或 C++ 更为适用。&#xA;相关问题：进程和线程有什么区别&#xA;编程基础 什么是AOP面向切面编程 &amp;ldquo;AOP&amp;rdquo; 代表的是 &amp;ldquo;Aspect-Oriented Programming&amp;rdquo;，即面向切面编程。AOP 是一种编程范式，旨在通过分离关注点（concerns）来提高代码的模块化性和可维护性。&#xA;在传统的面向对象编程（OOP）中，程序的功能通常被划分为各个类，每个类负责一个特定的功能。然而，有时一些横切关注点（cross-cutting concerns）会横穿多个类，例如日志记录、性能监控、事务管理等。AOP 的目标是通过在这些关注点上划定切面（Aspect），从而将其与主要业务逻辑分开，提高代码的模块化程度。</description>
     </item>
     <item>
       <title>Github GraphQL API</title>

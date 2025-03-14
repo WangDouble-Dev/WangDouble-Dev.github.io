@@ -6,8 +6,15 @@
     <description>Recent content in 其它 on Double Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 05 Aug 2024 20:51:39 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Mar 2025 17:07:01 +0800</lastBuildDate>
     <atom:link href="https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>资源</title>
+      <link>https://WangDouble-Dev.github.io/post/resource/</link>
+      <pubDate>Fri, 14 Mar 2025 17:07:01 +0800</pubDate>
+      <guid>https://WangDouble-Dev.github.io/post/resource/</guid>
+      <description>产品 Ant Design&#xA;网站建设 Hugo</description>
+    </item>
     <item>
       <title>Windows系统下隐藏QuickLook在系统托盘中的图标</title>
       <link>https://WangDouble-Dev.github.io/post/quick_look/</link>

@@ -3,13 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://WangDouble-Dev.github.io/categories/</loc>
-    <lastmod>2024-08-05T20:51:39+08:00</lastmod>
+    <lastmod>2025-03-14T17:07:01+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/</loc>
-    <lastmod>2024-08-05T20:51:39+08:00</lastmod>
+    <lastmod>2025-03-14T17:07:01+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/post/</loc>
-    <lastmod>2024-08-05T20:51:39+08:00</lastmod>
+    <lastmod>2025-03-14T17:07:01+08:00</lastmod>
+  </url><url>
+    <loc>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</loc>
+    <lastmod>2025-03-14T17:07:01+08:00</lastmod>
+  </url><url>
+    <loc>https://WangDouble-Dev.github.io/post/resource/</loc>
+    <lastmod>2025-03-14T17:07:01+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/tags/quicklook/</loc>
     <lastmod>2024-08-05T20:51:39+08:00</lastmod>
@@ -23,9 +29,6 @@
     <loc>https://WangDouble-Dev.github.io/post/quick_look/</loc>
     <lastmod>2024-08-05T20:51:39+08:00</lastmod>
   </url><url>
-    <loc>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</loc>
-    <lastmod>2024-08-05T20:51:39+08:00</lastmod>
-  </url><url>
     <loc>https://WangDouble-Dev.github.io/tags/ide/</loc>
     <lastmod>2024-02-25T13:24:05+08:00</lastmod>
   </url><url>
@@ -37,18 +40,6 @@
   </url><url>
     <loc>https://WangDouble-Dev.github.io/tags/power-save-mode/</loc>
     <lastmod>2024-02-25T13:24:05+08:00</lastmod>
-  </url><url>
-    <loc>https://WangDouble-Dev.github.io/tags/php/</loc>
-    <lastmod>2024-02-07T21:09:40+08:00</lastmod>
-  </url><url>
-    <loc>https://WangDouble-Dev.github.io/categories/php/</loc>
-    <lastmod>2024-02-07T21:09:40+08:00</lastmod>
-  </url><url>
-    <loc>https://WangDouble-Dev.github.io/post/phper/</loc>
-    <lastmod>2024-02-07T21:09:40+08:00</lastmod>
-  </url><url>
-    <loc>https://WangDouble-Dev.github.io/tags/%E9%9D%A2%E8%AF%95/</loc>
-    <lastmod>2024-02-07T21:09:40+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/tags/github/</loc>
     <lastmod>2023-12-24T15:00:53+08:00</lastmod>
@@ -81,6 +72,9 @@
     <lastmod>2023-12-10T20:51:53+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/categories/docker/</loc>
+    <lastmod>2023-12-10T20:51:53+08:00</lastmod>
+  </url><url>
+    <loc>https://WangDouble-Dev.github.io/tags/php/</loc>
     <lastmod>2023-12-10T20:51:53+08:00</lastmod>
   </url><url>
     <loc>https://WangDouble-Dev.github.io/post/docker_install/</loc>
