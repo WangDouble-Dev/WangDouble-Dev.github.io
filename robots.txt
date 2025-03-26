@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wangdouble-dev.github.io/sitemap.xml
