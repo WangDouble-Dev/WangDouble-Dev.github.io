@@ -1,0 +1,476 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Redis 数据类型对比 | Double Blog</title>
+    <meta name="description"
+        content="常用数据类型
+
+
+Strings: 存储文本或二进制数据。适用非结构化文档、计数器、开关标志、位图等简单场景。
+
+
+Hashes: 在单个 key 下存储键-值对。适用字段较少的扁平对象（如用户信息片段）、需要按字段访问或原子更新的场景。
+
+
+JSON: 存储结构化的层级数组和键值对象（JSON）。适用需要嵌套结构、路径查询或结合 Redis Search 做复杂索引的文档型数据。
+
+
+Lists: 存储简单的字符串序列。适用队列、栈、日志或需要按顺序读取的线性结构。
+
+
+Sets: 存储唯一字符串的集合。适用去重、成员检测、集合运算（交并差）等场景。
+
+
+Sorted sets: 存储带分数的唯一字符串集合。适用排行榜、按分数/排名区间检索、优先级队列。
+
+
+Streams: 存储条目序列，每条条目包含字段-值对并支持消费者组。适用日志、时序事件、多消费者场景与事件流处理。
+
+
+面向特定用途的高度专业化数据类型（不常用）
+
+
+Geospatial: 存储带有坐标的字符串，以便进行地理空间查询。适用附近搜索、地理位置服务、地图相关查询。
+
+
+Vector sets: 存储带向量数据（及可选元数据）的字符串，用于向量相似度查询。适用语义搜索、推荐、相似度检索、向量搜索场景。
+
+
+Probabilistic data types: 在大规模数据集上保持近似计数和其他统计信息。适用大规模唯一计数、频率估算、流量统计等需要空间效率的场景。
+
+
+Time series: 存储带时间戳的实值数据点。适用监控指标、遥测数据、时序分析与告警。
+
+
+如何选择数据类型
+下面用三棵简单的 ASCII 决策树列出文档、集合与序列的常见判断逻辑，便于快速查阅。
+文档（Documents）
+是否需要嵌套的数据结构（字段与数组）或使用 Redis Search 做地理空间索引/查询？
+├─ 是  -&gt; Use JSON
+└─ 否
+   └─ 是否需要使用 Redis Search 进行索引/查询（不含嵌套/地理）？
+      ├─ 是 -&gt; Use Hashes
+      └─ 否
+         └─ 是否需要对文档内的部分数据设置过期时间？
+            ├─ 是 -&gt; Use Hashes
+            └─ 否
+               └─ 是否需要频繁访问可用整数/位索引引用的简单字段？
+                  ├─ 是 -&gt; Use Strings
+                  └─ 否
+                     └─ 是否需要频繁访问具有字符串或二进制值的字段？
+                        ├─ 是 -&gt; Use Hashes
+                        └─ 否  -&gt; Use Strings
+集合（Collections）
+是否需要以某种顺序（任意顺序或字典序）检索元素？
+├─ 是 -&gt; Use Sorted sets
+└─ 否
+   └─ 是否需要为集合中的每个键存储额外信息，并且不需要集合运算（交并差）？
+      ├─ 是 -&gt; Use Hashes
+      └─ 否
+         └─ 键是否总是已知范围内的整数索引？
+            ├─ 是 -&gt; Use Strings (bitmaps)
+            └─ 否 -&gt; Use Sets
+序列（Sequences）
+是否需要维护任意优先级顺序、字典序、或经常按索引访问元素，或执行集合操作？
+├─ 是 -&gt; Use Sorted sets
+└─ 否
+   └─ 是否需要按时间戳顺序存取或管理多个消费者读取该序列？
+      ├─ 是 -&gt; Use Streams
+      └─ 否 -&gt; Use Lists
+延伸阅读
+
+缓存击穿、缓存穿透与缓存雪崩（详解）
+">
+    <link rel="canonical" href="https://WangDouble-Dev.github.io/post/redis_datatype/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://WangDouble-Dev.github.io/scss/style.min.b3145c1c4cdb2d819e5af37d602137b6aba027f8a5d144947be9e5b82b926192.css">
+
+    <meta property="og:url" content="https://WangDouble-Dev.github.io/post/redis_datatype/">
+	<meta property="og:site_name" content="Double Blog">
+	<meta property="og:title" content="Redis 数据类型对比">
+	<meta property="og:description" content="常用数据类型 Strings: 存储文本或二进制数据。适用非结构化文档、计数器、开关标志、位图等简单场景。
+Hashes: 在单个 key 下存储键-值对。适用字段较少的扁平对象（如用户信息片段）、需要按字段访问或原子更新的场景。
+JSON: 存储结构化的层级数组和键值对象（JSON）。适用需要嵌套结构、路径查询或结合 Redis Search 做复杂索引的文档型数据。
+Lists: 存储简单的字符串序列。适用队列、栈、日志或需要按顺序读取的线性结构。
+Sets: 存储唯一字符串的集合。适用去重、成员检测、集合运算（交并差）等场景。
+Sorted sets: 存储带分数的唯一字符串集合。适用排行榜、按分数/排名区间检索、优先级队列。
+Streams: 存储条目序列，每条条目包含字段-值对并支持消费者组。适用日志、时序事件、多消费者场景与事件流处理。
+面向特定用途的高度专业化数据类型（不常用） Geospatial: 存储带有坐标的字符串，以便进行地理空间查询。适用附近搜索、地理位置服务、地图相关查询。
+Vector sets: 存储带向量数据（及可选元数据）的字符串，用于向量相似度查询。适用语义搜索、推荐、相似度检索、向量搜索场景。
+Probabilistic data types: 在大规模数据集上保持近似计数和其他统计信息。适用大规模唯一计数、频率估算、流量统计等需要空间效率的场景。
+Time series: 存储带时间戳的实值数据点。适用监控指标、遥测数据、时序分析与告警。
+如何选择数据类型 下面用三棵简单的 ASCII 决策树列出文档、集合与序列的常见判断逻辑，便于快速查阅。
+文档（Documents） 是否需要嵌套的数据结构（字段与数组）或使用 Redis Search 做地理空间索引/查询？ ├─ 是 -&gt; Use JSON └─ 否 └─ 是否需要使用 Redis Search 进行索引/查询（不含嵌套/地理）？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 是否需要对文档内的部分数据设置过期时间？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 是否需要频繁访问可用整数/位索引引用的简单字段？ ├─ 是 -&gt; Use Strings └─ 否 └─ 是否需要频繁访问具有字符串或二进制值的字段？ ├─ 是 -&gt; Use Hashes └─ 否 -&gt; Use Strings 集合（Collections） 是否需要以某种顺序（任意顺序或字典序）检索元素？ ├─ 是 -&gt; Use Sorted sets └─ 否 └─ 是否需要为集合中的每个键存储额外信息，并且不需要集合运算（交并差）？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 键是否总是已知范围内的整数索引？ ├─ 是 -&gt; Use Strings (bitmaps) └─ 否 -&gt; Use Sets 序列（Sequences） 是否需要维护任意优先级顺序、字典序、或经常按索引访问元素，或执行集合操作？ ├─ 是 -&gt; Use Sorted sets └─ 否 └─ 是否需要按时间戳顺序存取或管理多个消费者读取该序列？ ├─ 是 -&gt; Use Streams └─ 否 -&gt; Use Lists 延伸阅读 缓存击穿、缓存穿透与缓存雪崩（详解）">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="post">
+		<meta property="article:published_time" content="2026-06-24T18:37:35+08:00">
+		<meta property="article:modified_time" content="2026-06-24T18:37:35+08:00">
+
+    
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Redis 数据类型对比">
+	<meta name="twitter:description" content="常用数据类型 Strings: 存储文本或二进制数据。适用非结构化文档、计数器、开关标志、位图等简单场景。
+Hashes: 在单个 key 下存储键-值对。适用字段较少的扁平对象（如用户信息片段）、需要按字段访问或原子更新的场景。
+JSON: 存储结构化的层级数组和键值对象（JSON）。适用需要嵌套结构、路径查询或结合 Redis Search 做复杂索引的文档型数据。
+Lists: 存储简单的字符串序列。适用队列、栈、日志或需要按顺序读取的线性结构。
+Sets: 存储唯一字符串的集合。适用去重、成员检测、集合运算（交并差）等场景。
+Sorted sets: 存储带分数的唯一字符串集合。适用排行榜、按分数/排名区间检索、优先级队列。
+Streams: 存储条目序列，每条条目包含字段-值对并支持消费者组。适用日志、时序事件、多消费者场景与事件流处理。
+面向特定用途的高度专业化数据类型（不常用） Geospatial: 存储带有坐标的字符串，以便进行地理空间查询。适用附近搜索、地理位置服务、地图相关查询。
+Vector sets: 存储带向量数据（及可选元数据）的字符串，用于向量相似度查询。适用语义搜索、推荐、相似度检索、向量搜索场景。
+Probabilistic data types: 在大规模数据集上保持近似计数和其他统计信息。适用大规模唯一计数、频率估算、流量统计等需要空间效率的场景。
+Time series: 存储带时间戳的实值数据点。适用监控指标、遥测数据、时序分析与告警。
+如何选择数据类型 下面用三棵简单的 ASCII 决策树列出文档、集合与序列的常见判断逻辑，便于快速查阅。
+文档（Documents） 是否需要嵌套的数据结构（字段与数组）或使用 Redis Search 做地理空间索引/查询？ ├─ 是 -&gt; Use JSON └─ 否 └─ 是否需要使用 Redis Search 进行索引/查询（不含嵌套/地理）？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 是否需要对文档内的部分数据设置过期时间？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 是否需要频繁访问可用整数/位索引引用的简单字段？ ├─ 是 -&gt; Use Strings └─ 否 └─ 是否需要频繁访问具有字符串或二进制值的字段？ ├─ 是 -&gt; Use Hashes └─ 否 -&gt; Use Strings 集合（Collections） 是否需要以某种顺序（任意顺序或字典序）检索元素？ ├─ 是 -&gt; Use Sorted sets └─ 否 └─ 是否需要为集合中的每个键存储额外信息，并且不需要集合运算（交并差）？ ├─ 是 -&gt; Use Hashes └─ 否 └─ 键是否总是已知范围内的整数索引？ ├─ 是 -&gt; Use Strings (bitmaps) └─ 否 -&gt; Use Sets 序列（Sequences） 是否需要维护任意优先级顺序、字典序、或经常按索引访问元素，或执行集合操作？ ├─ 是 -&gt; Use Sorted sets └─ 否 └─ 是否需要按时间戳顺序存取或管理多个消费者读取该序列？ ├─ 是 -&gt; Use Streams └─ 否 -&gt; Use Lists 延伸阅读 缓存击穿、缓存穿透与缓存雪崩（详解）">
+
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo">
+                    <h1>Double Blog</h1>
+                </span>
+            </a>
+
+            
+            <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://WangDouble-Dev.github.io/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                <a href="/post" class="navbar-item">Blog</a>
+                
+                <a href="/categories" class="navbar-item">Categories</a>
+                
+                <a href="/todo" class="navbar-item">Todo</a>
+                
+            </div>
+
+        </div>
+        <div class="search">
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            <a id="search-btn" style="display: inline-block;" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1">Redis 数据类型对比</h1>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/profile.jpg" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Wang Double</p>
+                            <p><time>June 24, 2026</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-categories-container">
+                    <a href="/categories/redis">Redis</a>, <a href="/categories/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">数据类型</a>
+                </div>
+            </div>
+        </div>
+        <div class="content article-content">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+            <aside>
+                <button id="tocButton" ><h4 id="contents" style="margin-left: 1vw;color:rgb(96, 134, 180);margin-bottom: 0;">CONTENTS</h4></button>
+                <div id="hide"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#常用数据类型">常用数据类型</a></li>
+    <li><a href="#面向特定用途的高度专业化数据类型不常用">面向特定用途的高度专业化数据类型（不常用）</a></li>
+    <li><a href="#如何选择数据类型">如何选择数据类型</a>
+      <ul>
+        <li><a href="#文档documents">文档（Documents）</a></li>
+        <li><a href="#集合collections">集合（Collections）</a></li>
+        <li><a href="#序列sequences">序列（Sequences）</a></li>
+      </ul>
+    </li>
+    <li><a href="#延伸阅读">延伸阅读</a></li>
+  </ul>
+</nav></div>
+            </aside>
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <h2 id="常用数据类型">常用数据类型</h2>
+<ul>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/strings">Strings</a>: 存储文本或二进制数据。适用非结构化文档、计数器、开关标志、位图等简单场景。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/hashes">Hashes</a>: 在单个 key 下存储键-值对。适用字段较少的扁平对象（如用户信息片段）、需要按字段访问或原子更新的场景。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/json">JSON</a>: 存储结构化的层级数组和键值对象（JSON）。适用需要嵌套结构、路径查询或结合 Redis Search 做复杂索引的文档型数据。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/lists">Lists</a>: 存储简单的字符串序列。适用队列、栈、日志或需要按顺序读取的线性结构。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/sets">Sets</a>: 存储唯一字符串的集合。适用去重、成员检测、集合运算（交并差）等场景。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/sorted-sets">Sorted sets</a>: 存储带分数的唯一字符串集合。适用排行榜、按分数/排名区间检索、优先级队列。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/streams">Streams</a>: 存储条目序列，每条条目包含字段-值对并支持消费者组。适用日志、时序事件、多消费者场景与事件流处理。</p>
+</li>
+</ul>
+<h2 id="面向特定用途的高度专业化数据类型不常用">面向特定用途的高度专业化数据类型（不常用）</h2>
+<ul>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/geospatial">Geospatial</a>: 存储带有坐标的字符串，以便进行地理空间查询。适用附近搜索、地理位置服务、地图相关查询。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/vector-sets">Vector sets</a>: 存储带向量数据（及可选元数据）的字符串，用于向量相似度查询。适用语义搜索、推荐、相似度检索、向量搜索场景。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/probabilistic">Probabilistic data types</a>: 在大规模数据集上保持近似计数和其他统计信息。适用大规模唯一计数、频率估算、流量统计等需要空间效率的场景。</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/latest/develop/data-types/timeseries">Time series</a>: 存储带时间戳的实值数据点。适用监控指标、遥测数据、时序分析与告警。</p>
+</li>
+</ul>
+<h2 id="如何选择数据类型">如何选择数据类型</h2>
+<p>下面用三棵简单的 ASCII 决策树列出文档、集合与序列的常见判断逻辑，便于快速查阅。</p>
+<h3 id="文档documents">文档（Documents）</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>是否需要嵌套的数据结构（字段与数组）或使用 Redis Search 做地理空间索引/查询？
+</span></span><span style="display:flex;"><span>├─ 是  -&gt; Use JSON
+</span></span><span style="display:flex;"><span>└─ 否
+</span></span><span style="display:flex;"><span>   └─ 是否需要使用 Redis Search 进行索引/查询（不含嵌套/地理）？
+</span></span><span style="display:flex;"><span>      ├─ 是 -&gt; Use Hashes
+</span></span><span style="display:flex;"><span>      └─ 否
+</span></span><span style="display:flex;"><span>         └─ 是否需要对文档内的部分数据设置过期时间？
+</span></span><span style="display:flex;"><span>            ├─ 是 -&gt; Use Hashes
+</span></span><span style="display:flex;"><span>            └─ 否
+</span></span><span style="display:flex;"><span>               └─ 是否需要频繁访问可用整数/位索引引用的简单字段？
+</span></span><span style="display:flex;"><span>                  ├─ 是 -&gt; Use Strings
+</span></span><span style="display:flex;"><span>                  └─ 否
+</span></span><span style="display:flex;"><span>                     └─ 是否需要频繁访问具有字符串或二进制值的字段？
+</span></span><span style="display:flex;"><span>                        ├─ 是 -&gt; Use Hashes
+</span></span><span style="display:flex;"><span>                        └─ 否  -&gt; Use Strings
+</span></span></code></pre></div><h3 id="集合collections">集合（Collections）</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>是否需要以某种顺序（任意顺序或字典序）检索元素？
+</span></span><span style="display:flex;"><span>├─ 是 -&gt; Use Sorted sets
+</span></span><span style="display:flex;"><span>└─ 否
+</span></span><span style="display:flex;"><span>   └─ 是否需要为集合中的每个键存储额外信息，并且不需要集合运算（交并差）？
+</span></span><span style="display:flex;"><span>      ├─ 是 -&gt; Use Hashes
+</span></span><span style="display:flex;"><span>      └─ 否
+</span></span><span style="display:flex;"><span>         └─ 键是否总是已知范围内的整数索引？
+</span></span><span style="display:flex;"><span>            ├─ 是 -&gt; Use Strings (bitmaps)
+</span></span><span style="display:flex;"><span>            └─ 否 -&gt; Use Sets
+</span></span></code></pre></div><h3 id="序列sequences">序列（Sequences）</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>是否需要维护任意优先级顺序、字典序、或经常按索引访问元素，或执行集合操作？
+</span></span><span style="display:flex;"><span>├─ 是 -&gt; Use Sorted sets
+</span></span><span style="display:flex;"><span>└─ 否
+</span></span><span style="display:flex;"><span>   └─ 是否需要按时间戳顺序存取或管理多个消费者读取该序列？
+</span></span><span style="display:flex;"><span>      ├─ 是 -&gt; Use Streams
+</span></span><span style="display:flex;"><span>      └─ 否 -&gt; Use Lists
+</span></span></code></pre></div><h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="/post/cache-breakdown" title="缓存击穿、缓存穿透与缓存雪崩 — 详解">缓存击穿、缓存穿透与缓存雪崩（详解）</a></li>
+</ul>
+
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a><hr style="border-top: 1px solid #EEEEEE;">
+<div id="comment"></div>
+<script>
+    const getStoredTheme = () => localStorage.getItem("theme") === "dark" ? "dark" : "light";
+
+    const setGiscusTheme = () => {
+        const sendMessage = (message) => {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (iframe) {
+                iframe.contentWindow.postMessage({giscus: message}, 'https://giscus.app');
+            }
+        }
+        sendMessage({setConfig: {theme: getStoredTheme()}})
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const giscusAttributes = {
+            "src": "https://giscus.app/client.js",
+            "data-repo": "WangDouble-Dev\/WangDouble-Dev.github.io",
+            "data-repo-id": "R_kgDOKL5y6g",
+            "data-category": "Announcements",
+            "data-category-id": "DIC_kwDOKL5y6s4Cb9eJ",
+            "data-mapping": "og:title",
+            "data-reactions-enabled": "1",
+            "data-emit-metadata": "0",
+            "data-input-position": "bottom",
+            "data-theme": getStoredTheme(),
+            "data-lang": "zh-CN",
+            "data-loading": "lazy",
+            "crossorigin": "anonymous",
+        };
+
+        
+        const giscusScript = document.createElement("script");
+        Object.entries(giscusAttributes).forEach(
+            ([key, value]) => giscusScript.setAttribute(key, value));
+        document.getElementById("comment").appendChild(giscusScript);
+
+        
+        const themeToggle = document.querySelector(".theme-toggle");
+        if (themeToggle) {
+            themeToggle.addEventListener("click", setGiscusTheme);
+        }
+    });
+
+</script>
+
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p>Previous post</p>
+                <a href="https://WangDouble-Dev.github.io/post/cache_breakdown/">缓存击穿、缓存穿透与缓存雪崩</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+                <p>Next post</p>
+                <a href="https://WangDouble-Dev.github.io/post/mysql_explain/">MySQL EXPLAIN 输出格式详解与性能优化思路</a>
+                
+            </div>
+        </section>
+    </div>
+
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2026 <a href="https://WangDouble-Dev.github.io/">Double Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" target="_blank">Hugo</a> &
+        <a href="https://github.com/hotjuicew/hugo-JuiceBar" target="_blank">JuiceBar</a>
+    </span>
+    </div>
+  </footer></body>
+</html>
+

@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>缓存击穿、缓存穿透与缓存雪崩 | Double Blog</title>
+    <meta name="description"
+        content="本文简要说明三类常见缓存问题的含义、成因与常见解决方案，侧重于实战可用的防护思路。
+
+一、缓存击穿
+缓存击穿是指：请求访问的数据在缓存中不存在，但在数据库中存在（注意：这点与「缓存穿透」不同，后者是缓存和数据库中都不存在）。通常由缓存过期引起。
+当某个 key 是热点（hot key）时，如果大量并发请求在缓存失效的瞬间同时落到后端数据库，会导致数据库压力骤增，甚至宕机——这就是缓存被“击穿”的场景。
+常见解决方案：
+
+
+互斥锁（只放行一个请求构建缓存）
+
+利用分布式锁（例如 Redis 的 SETNX 或 SET key val NX PX &lt;ttl&gt;）或其他锁机制，仅允许一个请求访问数据库并构建缓存，其他请求等待或返回缓存空值。
+
+
+
+后台续命（主动刷新）
+
+对于已知的热点 key，可在缓存到期前由后台任务（或单独线程）主动从数据库刷新缓存。例如：对设置了 10 分钟 TTL 的 hotkey，在第 8~9 分钟时预先刷新并重置 TTL，避免在失效瞬间出现高并发打到数据库。
+
+
+
+永不过期（适用于稳定不变的热点）
+
+如果业务能保证某些 key 的值在长时间内不会变化，并且访问很频繁，可以选择不设置过期，从而避免因过期引起的并发回源。但要谨慎使用（需考虑数据一致性与内存消耗）。
+
+
+
+
+二、缓存穿透
+缓存穿透是指：请求的数据在缓存中不存在，且数据库中也不存在。如果攻击者或错误客户端短时间内发送大量此类不同 key 的请求，会把压力全部打到数据库上。
+这是常见的恶意请求或异常行为造成的问题。常见应对方式：
+
+
+缓存空对象
+
+
+当数据库没有命中时，也将查询结果（如 null 或空对象）写入缓存，设置较短的 TTL。下次相同请求就会命中缓存，避免再次打到数据库。这种方式实现简单、成本低。
+
+
+注意：如果攻击请求中的 key 都是不同且仅请求一次，缓存空对象的效果会受限（每个 key 仍然需要一次后端查询）。
+
+
+
+
+布隆过滤器（Bloom Filter）
+
+
+将所有合法的 key 构建到布隆过滤器中，查询时先经过布隆过滤器判断：若布隆过滤器判断“不存在”，则可以直接拦截请求，不去查数据库；若判断“可能存在”，再去数据库验证。这能挡掉绝大部分非法请求。
+
+
+布隆过滤器的缺点：
+
+不支持删除（需要重建以控制误判率）。
+对缓存局部性不友好，查询可能跨越大内存空间，影响 CPU 缓存命中率，从而使查询性能下降。
+
+
+
+
+
+布谷鸟过滤器（Cuckoo Filter）
+
+布谷鸟过滤器是布隆过滤器的一种替代方案，支持删除并在某些场景下具有更好的空间/性能折衷，可作为更优选项之一。
+
+
+
+
+三、缓存雪崩
+缓存雪崩是指：大量不同的 key 在短时间内同时过期，导致大量请求回落到数据库或后端服务，产生剧烈的流量冲击。
+这与缓存击穿不同：缓存击穿通常是大量请求集中访问同一条数据，而缓存雪崩是大量不同数据同时失效。
+常见缓解策略：
+
+
+错峰过期（随机化 TTL）">
+    <link rel="canonical" href="https://WangDouble-Dev.github.io/post/cache_breakdown/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://WangDouble-Dev.github.io/scss/style.min.b3145c1c4cdb2d819e5af37d602137b6aba027f8a5d144947be9e5b82b926192.css">
+
+    <meta property="og:url" content="https://WangDouble-Dev.github.io/post/cache_breakdown/">
+	<meta property="og:site_name" content="Double Blog">
+	<meta property="og:title" content="缓存击穿、缓存穿透与缓存雪崩">
+	<meta property="og:description" content="本文简要说明三类常见缓存问题的含义、成因与常见解决方案，侧重于实战可用的防护思路。
+一、缓存击穿 缓存击穿是指：请求访问的数据在缓存中不存在，但在数据库中存在（注意：这点与「缓存穿透」不同，后者是缓存和数据库中都不存在）。通常由缓存过期引起。
+当某个 key 是热点（hot key）时，如果大量并发请求在缓存失效的瞬间同时落到后端数据库，会导致数据库压力骤增，甚至宕机——这就是缓存被“击穿”的场景。
+常见解决方案：
+互斥锁（只放行一个请求构建缓存）
+利用分布式锁（例如 Redis 的 SETNX 或 SET key val NX PX &lt;ttl&gt;）或其他锁机制，仅允许一个请求访问数据库并构建缓存，其他请求等待或返回缓存空值。 后台续命（主动刷新）
+对于已知的热点 key，可在缓存到期前由后台任务（或单独线程）主动从数据库刷新缓存。例如：对设置了 10 分钟 TTL 的 hotkey，在第 8~9 分钟时预先刷新并重置 TTL，避免在失效瞬间出现高并发打到数据库。 永不过期（适用于稳定不变的热点）
+如果业务能保证某些 key 的值在长时间内不会变化，并且访问很频繁，可以选择不设置过期，从而避免因过期引起的并发回源。但要谨慎使用（需考虑数据一致性与内存消耗）。 二、缓存穿透 缓存穿透是指：请求的数据在缓存中不存在，且数据库中也不存在。如果攻击者或错误客户端短时间内发送大量此类不同 key 的请求，会把压力全部打到数据库上。
+这是常见的恶意请求或异常行为造成的问题。常见应对方式：
+缓存空对象
+当数据库没有命中时，也将查询结果（如 null 或空对象）写入缓存，设置较短的 TTL。下次相同请求就会命中缓存，避免再次打到数据库。这种方式实现简单、成本低。
+注意：如果攻击请求中的 key 都是不同且仅请求一次，缓存空对象的效果会受限（每个 key 仍然需要一次后端查询）。
+布隆过滤器（Bloom Filter）
+将所有合法的 key 构建到布隆过滤器中，查询时先经过布隆过滤器判断：若布隆过滤器判断“不存在”，则可以直接拦截请求，不去查数据库；若判断“可能存在”，再去数据库验证。这能挡掉绝大部分非法请求。
+布隆过滤器的缺点：
+不支持删除（需要重建以控制误判率）。 对缓存局部性不友好，查询可能跨越大内存空间，影响 CPU 缓存命中率，从而使查询性能下降。 布谷鸟过滤器（Cuckoo Filter）
+布谷鸟过滤器是布隆过滤器的一种替代方案，支持删除并在某些场景下具有更好的空间/性能折衷，可作为更优选项之一。 三、缓存雪崩 缓存雪崩是指：大量不同的 key 在短时间内同时过期，导致大量请求回落到数据库或后端服务，产生剧烈的流量冲击。
+这与缓存击穿不同：缓存击穿通常是大量请求集中访问同一条数据，而缓存雪崩是大量不同数据同时失效。
+常见缓解策略：
+错峰过期（随机化 TTL）">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="post">
+		<meta property="article:published_time" content="2026-06-24T18:32:29+08:00">
+		<meta property="article:modified_time" content="2026-06-24T18:32:29+08:00">
+
+    
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="缓存击穿、缓存穿透与缓存雪崩">
+	<meta name="twitter:description" content="本文简要说明三类常见缓存问题的含义、成因与常见解决方案，侧重于实战可用的防护思路。
+一、缓存击穿 缓存击穿是指：请求访问的数据在缓存中不存在，但在数据库中存在（注意：这点与「缓存穿透」不同，后者是缓存和数据库中都不存在）。通常由缓存过期引起。
+当某个 key 是热点（hot key）时，如果大量并发请求在缓存失效的瞬间同时落到后端数据库，会导致数据库压力骤增，甚至宕机——这就是缓存被“击穿”的场景。
+常见解决方案：
+互斥锁（只放行一个请求构建缓存）
+利用分布式锁（例如 Redis 的 SETNX 或 SET key val NX PX &lt;ttl&gt;）或其他锁机制，仅允许一个请求访问数据库并构建缓存，其他请求等待或返回缓存空值。 后台续命（主动刷新）
+对于已知的热点 key，可在缓存到期前由后台任务（或单独线程）主动从数据库刷新缓存。例如：对设置了 10 分钟 TTL 的 hotkey，在第 8~9 分钟时预先刷新并重置 TTL，避免在失效瞬间出现高并发打到数据库。 永不过期（适用于稳定不变的热点）
+如果业务能保证某些 key 的值在长时间内不会变化，并且访问很频繁，可以选择不设置过期，从而避免因过期引起的并发回源。但要谨慎使用（需考虑数据一致性与内存消耗）。 二、缓存穿透 缓存穿透是指：请求的数据在缓存中不存在，且数据库中也不存在。如果攻击者或错误客户端短时间内发送大量此类不同 key 的请求，会把压力全部打到数据库上。
+这是常见的恶意请求或异常行为造成的问题。常见应对方式：
+缓存空对象
+当数据库没有命中时，也将查询结果（如 null 或空对象）写入缓存，设置较短的 TTL。下次相同请求就会命中缓存，避免再次打到数据库。这种方式实现简单、成本低。
+注意：如果攻击请求中的 key 都是不同且仅请求一次，缓存空对象的效果会受限（每个 key 仍然需要一次后端查询）。
+布隆过滤器（Bloom Filter）
+将所有合法的 key 构建到布隆过滤器中，查询时先经过布隆过滤器判断：若布隆过滤器判断“不存在”，则可以直接拦截请求，不去查数据库；若判断“可能存在”，再去数据库验证。这能挡掉绝大部分非法请求。
+布隆过滤器的缺点：
+不支持删除（需要重建以控制误判率）。 对缓存局部性不友好，查询可能跨越大内存空间，影响 CPU 缓存命中率，从而使查询性能下降。 布谷鸟过滤器（Cuckoo Filter）
+布谷鸟过滤器是布隆过滤器的一种替代方案，支持删除并在某些场景下具有更好的空间/性能折衷，可作为更优选项之一。 三、缓存雪崩 缓存雪崩是指：大量不同的 key 在短时间内同时过期，导致大量请求回落到数据库或后端服务，产生剧烈的流量冲击。
+这与缓存击穿不同：缓存击穿通常是大量请求集中访问同一条数据，而缓存雪崩是大量不同数据同时失效。
+常见缓解策略：
+错峰过期（随机化 TTL）">
+
+    
+    
+
+</head><body><nav class="navbar is-light" role="navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="/" title="home" class="navbar-item">
+                <span class="logo">
+                    <h1>Double Blog</h1>
+                </span>
+            </a>
+
+            
+            <a id="theme-toggle" class="theme-toggle" href="#">
+                <img src="https://WangDouble-Dev.github.io/svg/sun.svg" alt="sun icon" class="theme-icon" />
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                
+                <a href="/post" class="navbar-item">Blog</a>
+                
+                <a href="/categories" class="navbar-item">Categories</a>
+                
+                <a href="/todo" class="navbar-item">Todo</a>
+                
+            </div>
+
+        </div>
+        <div class="search">
+            <div id="fastSearch">
+                <input id="searchInput" tabindex="0" placeholder="Search..">
+                <ul id="searchResults">
+
+                </ul>
+            </div>
+            <a id="search-btn" style="display: inline-block;" href="# ">
+                <div class="icon-search"><svg class="search-svg" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+            </a>
+        </div>
+
+        <script src="/js/fuse.min.js"></script> 
+        <script src="/js/fastsearch.js"></script>
+
+    </div>
+</nav>
+
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var burger = document.querySelector('.navbar-burger');
+        burger.addEventListener('click', function() {
+            burger.classList.toggle('is-active');
+            document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+    });
+
+    
+    function setTheme(theme) {
+        let body = document.body;
+        let themeIcon = document.querySelector(".theme-icon");
+        if (theme === "dark") {
+            body.classList.add("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/moon.svg";
+            themeIcon.alt = "moon icon";
+        } else {
+            body.classList.remove("dark-mode");
+            themeIcon.src = "https:\/\/WangDouble-Dev.github.io\/svg/sun.svg";
+            themeIcon.alt = "sun icon";
+        }
+        
+        localStorage.setItem("theme", theme);
+    }
+
+    
+    let theme = localStorage.getItem("theme") || "light";
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDarkMode) {
+        
+        setTheme('dark');
+
+    } else {
+        
+        setTheme('light');
+    }
+    setTheme(theme);
+
+    
+    document.getElementById("theme-toggle").addEventListener("click", function() {
+        if (theme === "light") {
+            theme = "dark";
+        } else {
+            theme = "light";
+        }
+        setTheme(theme);
+    });
+
+
+
+</script>
+
+</header><main>
+<div class="single-container">
+    <div class="archive">
+        <h1 class="title is-1">缓存击穿、缓存穿透与缓存雪崩</h1>
+        <div class="title subtitle heading is-6">
+            <div class="author-info columns is-vcentered">
+                <div class="column">
+                    <div class="columns is-vcentered is-mobile">
+                        
+                        <div class="column is-narrow">
+                            <img src="/images/profile.jpg" class="author-image">
+                        </div>
+                        
+                        <div class="column">
+                            <p>Wang Double</p>
+                            <p><time>June 24, 2026</time>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="small-categories-container">
+                    <a href="/categories/redis">Redis</a>, <a href="/categories/%E7%BC%93%E5%AD%98">缓存</a>, <a href="/categories/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF">缓存击穿</a>, <a href="/categories/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F">缓存穿透</a>, <a href="/categories/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9">缓存雪崩</a>
+                </div>
+            </div>
+        </div>
+        <div class="content article-content">
+            <div class="toc-container">
+                
+    <div class="post-toc">
+        
+            <aside>
+                <button id="tocButton" ><h4 id="contents" style="margin-left: 1vw;color:rgb(96, 134, 180);margin-bottom: 0;">CONTENTS</h4></button>
+                <div id="hide"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一缓存击穿">一、缓存击穿</a></li>
+    <li><a href="#二缓存穿透">二、缓存穿透</a></li>
+    <li><a href="#三缓存雪崩">三、缓存雪崩</a></li>
+    <li><a href="#延伸阅读">延伸阅读</a></li>
+    <li><a href="#参考与致谢">参考与致谢</a></li>
+  </ul>
+</nav></div>
+            </aside>
+        
+    </div><script>
+    
+        let button = document.getElementById('tocButton');
+        let hide = document.getElementById("hide");
+        let contents=document.getElementById("contents");
+        button.addEventListener("click", function() {
+        if (hide.style.display!='block') {
+            hide.style.display='block'
+        } else {
+            hide.style.display='none'
+            contents.style.color='rgb(96, 134, 180)'
+        }
+        });
+    
+
+
+
+
+</script>
+            </div>
+            <p>本文简要说明三类常见缓存问题的含义、成因与常见解决方案，侧重于实战可用的防护思路。</p>
+<hr>
+<h2 id="一缓存击穿">一、缓存击穿</h2>
+<p>缓存击穿是指：请求访问的数据在缓存中不存在，但在数据库中存在（注意：这点与「缓存穿透」不同，后者是缓存和数据库中都不存在）。通常由缓存过期引起。</p>
+<p>当某个 key 是热点（hot key）时，如果大量并发请求在缓存失效的瞬间同时落到后端数据库，会导致数据库压力骤增，甚至宕机——这就是缓存被“击穿”的场景。</p>
+<p>常见解决方案：</p>
+<ol>
+<li>
+<p>互斥锁（只放行一个请求构建缓存）</p>
+<ul>
+<li>利用分布式锁（例如 Redis 的 <code>SETNX</code> 或 <code>SET key val NX PX &lt;ttl&gt;</code>）或其他锁机制，仅允许一个请求访问数据库并构建缓存，其他请求等待或返回缓存空值。</li>
+</ul>
+</li>
+<li>
+<p>后台续命（主动刷新）</p>
+<ul>
+<li>对于已知的热点 key，可在缓存到期前由后台任务（或单独线程）主动从数据库刷新缓存。例如：对设置了 10 分钟 TTL 的 <code>hotkey</code>，在第 8~9 分钟时预先刷新并重置 TTL，避免在失效瞬间出现高并发打到数据库。</li>
+</ul>
+</li>
+<li>
+<p>永不过期（适用于稳定不变的热点）</p>
+<ul>
+<li>如果业务能保证某些 key 的值在长时间内不会变化，并且访问很频繁，可以选择不设置过期，从而避免因过期引起的并发回源。但要谨慎使用（需考虑数据一致性与内存消耗）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="二缓存穿透">二、缓存穿透</h2>
+<p>缓存穿透是指：请求的数据在缓存中不存在，且数据库中也不存在。如果攻击者或错误客户端短时间内发送大量此类不同 key 的请求，会把压力全部打到数据库上。</p>
+<p>这是常见的恶意请求或异常行为造成的问题。常见应对方式：</p>
+<ol>
+<li>
+<p>缓存空对象</p>
+<ul>
+<li>
+<p>当数据库没有命中时，也将查询结果（如 <code>null</code> 或空对象）写入缓存，设置较短的 TTL。下次相同请求就会命中缓存，避免再次打到数据库。这种方式实现简单、成本低。</p>
+</li>
+<li>
+<p>注意：如果攻击请求中的 key 都是不同且仅请求一次，缓存空对象的效果会受限（每个 key 仍然需要一次后端查询）。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>布隆过滤器（Bloom Filter）</p>
+<ul>
+<li>
+<p>将所有合法的 key 构建到布隆过滤器中，查询时先经过布隆过滤器判断：若布隆过滤器判断“不存在”，则可以直接拦截请求，不去查数据库；若判断“可能存在”，再去数据库验证。这能挡掉绝大部分非法请求。</p>
+</li>
+<li>
+<p>布隆过滤器的缺点：</p>
+<ul>
+<li>不支持删除（需要重建以控制误判率）。</li>
+<li>对缓存局部性不友好，查询可能跨越大内存空间，影响 CPU 缓存命中率，从而使查询性能下降。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>布谷鸟过滤器（Cuckoo Filter）</p>
+<ul>
+<li>布谷鸟过滤器是布隆过滤器的一种替代方案，支持删除并在某些场景下具有更好的空间/性能折衷，可作为更优选项之一。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="三缓存雪崩">三、缓存雪崩</h2>
+<p>缓存雪崩是指：大量不同的 key 在短时间内同时过期，导致大量请求回落到数据库或后端服务，产生剧烈的流量冲击。</p>
+<p>这与缓存击穿不同：缓存击穿通常是大量请求集中访问同一条数据，而缓存雪崩是大量不同数据同时失效。</p>
+<p>常见缓解策略：</p>
+<ol>
+<li>
+<p>错峰过期（随机化 TTL）</p>
+<ul>
+<li>在设置过期时间时加入小幅随机化（例如在基础 TTL 上加上 0~30 秒的随机值），避免大量 key 在同一时刻同时失效。</li>
+</ul>
+</li>
+<li>
+<p>缓存预热</p>
+<ul>
+<li>在系统启动或某些维护后，预先将已知热点数据写入缓存，降低冷启动时对数据库的冲击。</li>
+</ul>
+</li>
+<li>
+<p>多级缓存 / 降级策略</p>
+<ul>
+<li>使用本地缓存+分布式缓存的组合，或在后端压力过大时返回降级内容（如部分数据、错误提示或静态页面），保护核心服务可用性。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>题外：Redis 宕机后的恢复小贴士</p>
+<ul>
+<li>重启实例前，先在入口层（例如 Nginx 或网关）做流量隔离，将大部分请求指向临时错误页或限流，从而避免新启动的后端被瞬时流量打垮。</li>
+<li>可在 Redis 重启后做缓存预热，先把已知热点 key 写回缓存，再对外提供服务，避免“重启 → 缓存未命中 → 大量请求打到 DB”的恶性循环。</li>
+</ul>
+<p>示例：一个简单的 Nginx 限流/维护页配置片段（仅示意）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">server</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">server_name</span> <span style="color:#e6db74">example.com</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">## 在维护时返回 503 页面
+</span></span></span><span style="display:flex;"><span>  <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">return</span> <span style="color:#ae81ff">503</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">error_page</span> <span style="color:#ae81ff">503</span> <span style="color:#e6db74">/maintenance.html</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">location</span> = <span style="color:#e6db74">/maintenance.html</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">root</span> <span style="color:#e6db74">/usr/share/nginx/html</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="/post/redis_datatype">Redis数据类型</a></li>
+</ul>
+<h2 id="参考与致谢">参考与致谢</h2>
+<p>本文参考并借鉴了以下文章的结构与部分表述，特此致谢：</p>
+<ul>
+<li>孙铭（xm66），《缓存一致性与缓存策略详解》（博客园），原文： <a href="https://www.cnblogs.com/xm66/p/15196745.html">https://www.cnblogs.com/xm66/p/15196745.html</a></li>
+</ul>
+
+        </div>
+    </div>
+    <a href="#" id="scrollToTopButton">
+        <svg t="1686753152588" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="3988" width="48" height="48">
+            <path
+                d="M518.5 360.3c-3.2-4.4-9.7-4.4-12.9 0l-178 246c-3.8 5.3 0 12.7 6.5 12.7H381c10.2 0 19.9-4.9 25.9-13.2L512 460.4l105.2 145.4c6 8.3 15.6 13.2 25.9 13.2H690c6.5 0 10.3-7.4 6.5-12.7l-178-246z"
+                p-id="3989" fill="#363636"></path>
+            <path
+                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                p-id="3990" fill="#363636"></path>
+        </svg>
+    </a><hr style="border-top: 1px solid #EEEEEE;">
+<div id="comment"></div>
+<script>
+    const getStoredTheme = () => localStorage.getItem("theme") === "dark" ? "dark" : "light";
+
+    const setGiscusTheme = () => {
+        const sendMessage = (message) => {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (iframe) {
+                iframe.contentWindow.postMessage({giscus: message}, 'https://giscus.app');
+            }
+        }
+        sendMessage({setConfig: {theme: getStoredTheme()}})
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const giscusAttributes = {
+            "src": "https://giscus.app/client.js",
+            "data-repo": "WangDouble-Dev\/WangDouble-Dev.github.io",
+            "data-repo-id": "R_kgDOKL5y6g",
+            "data-category": "Announcements",
+            "data-category-id": "DIC_kwDOKL5y6s4Cb9eJ",
+            "data-mapping": "og:title",
+            "data-reactions-enabled": "1",
+            "data-emit-metadata": "0",
+            "data-input-position": "bottom",
+            "data-theme": getStoredTheme(),
+            "data-lang": "zh-CN",
+            "data-loading": "lazy",
+            "crossorigin": "anonymous",
+        };
+
+        
+        const giscusScript = document.createElement("script");
+        Object.entries(giscusAttributes).forEach(
+            ([key, value]) => giscusScript.setAttribute(key, value));
+        document.getElementById("comment").appendChild(giscusScript);
+
+        
+        const themeToggle = document.querySelector(".theme-toggle");
+        if (themeToggle) {
+            themeToggle.addEventListener("click", setGiscusTheme);
+        }
+    });
+
+</script>
+
+
+<div class="pp-container">
+        <section class="pre-and-post">
+            <div class="has-text-left">
+                
+                <p>Previous post</p>
+                <a href="https://WangDouble-Dev.github.io/post/quick_look/">Windows系统下隐藏QuickLook在系统托盘中的图标</a>
+                
+            </div>
+            <div class="has-text-right">
+                
+                <p>Next post</p>
+                <a href="https://WangDouble-Dev.github.io/post/redis_datatype/">Redis 数据类型对比</a>
+                
+            </div>
+        </section>
+    </div>
+
+</div>
+
+        </main><footer class="footer">
+    <div class="content has-text-centered">
+    <span>&copy; 2026 <a href="https://WangDouble-Dev.github.io/">Double Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" target="_blank">Hugo</a> &
+        <a href="https://github.com/hotjuicew/hugo-JuiceBar" target="_blank">JuiceBar</a>
+    </span>
+    </div>
+  </footer></body>
+</html>
+

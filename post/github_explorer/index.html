@@ -6,36 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Github GraphQL API | Double Blog</title>
     <meta name="description"
-        content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
+        content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。
+请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
+比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。
+假设你的仓库url地址是https://github.com/owner/repo_name 在Github GraphQL API资源管理器中输入如下查询语句。
+{
+  repository(owner: &#34;owner&#34;, name: &#34;repo_name&#34;) {
+    id
+    name
+    discussionCategories(first:1) {
+      nodes{
+        id
+        name
+      }
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+      totalCount
+    }
+  }
+}
+就会得到如下结果。
+{
+  &#34;data&#34;: {
+    &#34;repository&#34;: {
+      &#34;id&#34;: &#34;R_key&#34;,
+      &#34;name&#34;: &#34;repo_name&#34;,
+      &#34;discussionCategories&#34;: {
+        &#34;nodes&#34;: [
+          {
+            &#34;id&#34;: &#34;DIC_key&#34;,
+            &#34;name&#34;: &#34;Announcements&#34;
+          }
+        ],
+        &#34;pageInfo&#34;: {
+          &#34;hasNextPage&#34;: true,
+          &#34;hasPreviousPage&#34;: false
+        },
+        &#34;totalCount&#34;: 6
+      }
+    }
+  }
+}
+更多其他信息查询及资源管理器的使用可参考官方文档。">
+    <link rel="canonical" href="https://WangDouble-Dev.github.io/post/github_explorer/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    
+    <link rel="stylesheet" href="https://WangDouble-Dev.github.io/scss/style.min.b3145c1c4cdb2d819e5af37d602137b6aba027f8a5d144947be9e5b82b926192.css">
+
+    <meta property="og:url" content="https://WangDouble-Dev.github.io/post/github_explorer/">
+	<meta property="og:site_name" content="Double Blog">
+	<meta property="og:title" content="Github GraphQL API">
+	<meta property="og:description" content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
 比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。
 假设你的仓库url地址是https://github.com/owner/repo_name 在Github GraphQL API资源管理器中输入如下查询语句。
 { repository(owner: &#34;owner&#34;, name: &#34;repo_name&#34;) { id name discussionCategories(first:1) { nodes{ id name } pageInfo{ hasNextPage hasPreviousPage } totalCount } } } 就会得到如下结果。
 { &#34;data&#34;: { &#34;repository&#34;: { &#34;id&#34;: &#34;R_key&#34;, &#34;name&#34;: &#34;repo_name&#34;, &#34;discussionCategories&#34;: { &#34;nodes&#34;: [ { &#34;id&#34;: &#34;DIC_key&#34;, &#34;name&#34;: &#34;Announcements&#34; } ], &#34;pageInfo&#34;: { &#34;hasNextPage&#34;: true, &#34;hasPreviousPage&#34;: false }, &#34;totalCount&#34;: 6 } } } } 更多其他信息查询及资源管理器的使用可参考官方文档。">
-    <link rel="canonical" href="https://WangDouble-Dev.github.io/post/github_explorer/" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-    
-    <link rel="stylesheet" href="https://WangDouble-Dev.github.io/scss/style.min.ec4c19ab19e79854e795e9ac3d39370d043413170cd956f11bdfae0dd777c30f.css">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="post">
+		<meta property="article:published_time" content="2023-12-24T15:00:53+08:00">
+		<meta property="article:modified_time" content="2023-12-24T15:00:53+08:00">
+		<meta property="article:tag" content="Github">
 
-    <meta property="og:title" content="Github GraphQL API" />
-<meta property="og:description" content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
+    
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Github GraphQL API">
+	<meta name="twitter:description" content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
 比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。
 假设你的仓库url地址是https://github.com/owner/repo_name 在Github GraphQL API资源管理器中输入如下查询语句。
 { repository(owner: &#34;owner&#34;, name: &#34;repo_name&#34;) { id name discussionCategories(first:1) { nodes{ id name } pageInfo{ hasNextPage hasPreviousPage } totalCount } } } 就会得到如下结果。
-{ &#34;data&#34;: { &#34;repository&#34;: { &#34;id&#34;: &#34;R_key&#34;, &#34;name&#34;: &#34;repo_name&#34;, &#34;discussionCategories&#34;: { &#34;nodes&#34;: [ { &#34;id&#34;: &#34;DIC_key&#34;, &#34;name&#34;: &#34;Announcements&#34; } ], &#34;pageInfo&#34;: { &#34;hasNextPage&#34;: true, &#34;hasPreviousPage&#34;: false }, &#34;totalCount&#34;: 6 } } } } 更多其他信息查询及资源管理器的使用可参考官方文档。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://WangDouble-Dev.github.io/post/github_explorer/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2023-12-24T15:00:53+08:00" />
-<meta property="article:modified_time" content="2023-12-24T15:00:53+08:00" /><meta property="og:site_name" content="Wang Double" />
+{ &#34;data&#34;: { &#34;repository&#34;: { &#34;id&#34;: &#34;R_key&#34;, &#34;name&#34;: &#34;repo_name&#34;, &#34;discussionCategories&#34;: { &#34;nodes&#34;: [ { &#34;id&#34;: &#34;DIC_key&#34;, &#34;name&#34;: &#34;Announcements&#34; } ], &#34;pageInfo&#34;: { &#34;hasNextPage&#34;: true, &#34;hasPreviousPage&#34;: false }, &#34;totalCount&#34;: 6 } } } } 更多其他信息查询及资源管理器的使用可参考官方文档。">
 
-
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Github GraphQL API"/>
-<meta name="twitter:description" content="Github GraphQL API是Github提供的一种API接口。它可以让你更方便的获取Github上的数据。 请求该API最直观最简单的方式就是使用Github GraphQL API资源管理器。
-比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。
-假设你的仓库url地址是https://github.com/owner/repo_name 在Github GraphQL API资源管理器中输入如下查询语句。
-{ repository(owner: &#34;owner&#34;, name: &#34;repo_name&#34;) { id name discussionCategories(first:1) { nodes{ id name } pageInfo{ hasNextPage hasPreviousPage } totalCount } } } 就会得到如下结果。
-{ &#34;data&#34;: { &#34;repository&#34;: { &#34;id&#34;: &#34;R_key&#34;, &#34;name&#34;: &#34;repo_name&#34;, &#34;discussionCategories&#34;: { &#34;nodes&#34;: [ { &#34;id&#34;: &#34;DIC_key&#34;, &#34;name&#34;: &#34;Announcements&#34; } ], &#34;pageInfo&#34;: { &#34;hasNextPage&#34;: true, &#34;hasPreviousPage&#34;: false }, &#34;totalCount&#34;: 6 } } } } 更多其他信息查询及资源管理器的使用可参考官方文档。"/>
-
-    
     
     
 
@@ -159,7 +202,7 @@
                         
                         <div class="column">
                             <p>Wang Double</p>
-                            <p><time>12月 24号, 2023</time>
+                            <p><time>December 24, 2023</time>
                             </p>
                         </div>
                     </div>
@@ -198,9 +241,9 @@
 请求该API最直观最简单的方式就是使用<a href="https://docs.github.com/zh/graphql/overview/explorer">Github GraphQL API资源管理器</a>。</p>
 <p>比如，假如你想知道你的仓库ID和Discussions分类ID。就可以使用Github GraphQL API查询。<br>
 假设你的仓库url地址是<code>https://github.com/owner/repo_name</code> 在Github GraphQL API资源管理器中输入如下查询语句。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GraphQL" data-lang="GraphQL"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-GraphQL" data-lang="GraphQL"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  repository(owner: <span style="color:#e6db74">&#34;owner&#34;</span>, <span style="color:#a6e22e">name</span>: <span style="color:#e6db74">&#34;repo_name&#34;</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">id</span>
+</span></span><span style="display:flex;"><span>    id
 </span></span><span style="display:flex;"><span>    name
 </span></span><span style="display:flex;"><span>    discussionCategories(first:<span style="color:#a6e22e">1</span>) {
 </span></span><span style="display:flex;"><span>      nodes{
@@ -216,7 +259,7 @@
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>就会得到如下结果。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GraphQL" data-lang="GraphQL"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-GraphQL" data-lang="GraphQL"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;data&#34;</span>: {
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;repository&#34;</span>: {
 </span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;R_key&#34;</span>,
@@ -308,13 +351,13 @@ GraphQL不仅允许客户端精确地指定它们需要的数据，还使得客�
         <section class="pre-and-post">
             <div class="has-text-left">
                 
-                <p>上一篇</p>
+                <p>Previous post</p>
                 <a href="https://WangDouble-Dev.github.io/post/giscus/">Github Pages 评论系统 Giscus</a>
                 
             </div>
             <div class="has-text-right">
                 
-                <p>下一篇</p>
+                <p>Next post</p>
                 <a href="https://WangDouble-Dev.github.io/post/ide_power_save_mode/">IDE|PHPStorm Power Save Mode模式开启导致代码不提示及自动补全失效</a>
                 
             </div>
@@ -325,7 +368,7 @@ GraphQL不仅允许客户端精确地指定它们需要的数据，还使得客�
 
         </main><footer class="footer">
     <div class="content has-text-centered">
-    <span>&copy; 2025 <a href="https://WangDouble-Dev.github.io/">Double Blog</a></span>
+    <span>&copy; 2026 <a href="https://WangDouble-Dev.github.io/">Double Blog</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" target="_blank">Hugo</a> &

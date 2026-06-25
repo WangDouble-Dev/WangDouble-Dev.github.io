@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>缓存穿透 on Double Blog</title>
+		<link>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/</link>
+		<description>Recent content in 缓存穿透 on Double Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 24 Jun 2026 18:32:29 +0800</lastBuildDate>
+		
+			<atom:link href="https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>缓存击穿、缓存穿透与缓存雪崩</title>
+				<link>https://WangDouble-Dev.github.io/post/cache_breakdown/</link>
+				<pubDate>Wed, 24 Jun 2026 18:32:29 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/post/cache_breakdown/</guid>
+				<description>&lt;p&gt;本文简要说明三类常见缓存问题的含义、成因与常见解决方案，侧重于实战可用的防护思路。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;一缓存击穿&#34;&gt;一、缓存击穿&lt;/h2&gt;&#xA;&lt;p&gt;缓存击穿是指：请求访问的数据在缓存中不存在，但在数据库中存在（注意：这点与「缓存穿透」不同，后者是缓存和数据库中都不存在）。通常由缓存过期引起。&lt;/p&gt;&#xA;&lt;p&gt;当某个 key 是热点（hot key）时，如果大量并发请求在缓存失效的瞬间同时落到后端数据库，会导致数据库压力骤增，甚至宕机——这就是缓存被“击穿”的场景。&lt;/p&gt;&#xA;&lt;p&gt;常见解决方案：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;互斥锁（只放行一个请求构建缓存）&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;利用分布式锁（例如 Redis 的 &lt;code&gt;SETNX&lt;/code&gt; 或 &lt;code&gt;SET key val NX PX &amp;lt;ttl&amp;gt;&lt;/code&gt;）或其他锁机制，仅允许一个请求访问数据库并构建缓存，其他请求等待或返回缓存空值。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;后台续命（主动刷新）&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;对于已知的热点 key，可在缓存到期前由后台任务（或单独线程）主动从数据库刷新缓存。例如：对设置了 10 分钟 TTL 的 &lt;code&gt;hotkey&lt;/code&gt;，在第 8~9 分钟时预先刷新并重置 TTL，避免在失效瞬间出现高并发打到数据库。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;永不过期（适用于稳定不变的热点）&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;如果业务能保证某些 key 的值在长时间内不会变化，并且访问很频繁，可以选择不设置过期，从而避免因过期引起的并发回源。但要谨慎使用（需考虑数据一致性与内存消耗）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;二缓存穿透&#34;&gt;二、缓存穿透&lt;/h2&gt;&#xA;&lt;p&gt;缓存穿透是指：请求的数据在缓存中不存在，且数据库中也不存在。如果攻击者或错误客户端短时间内发送大量此类不同 key 的请求，会把压力全部打到数据库上。&lt;/p&gt;&#xA;&lt;p&gt;这是常见的恶意请求或异常行为造成的问题。常见应对方式：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;缓存空对象&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;当数据库没有命中时，也将查询结果（如 &lt;code&gt;null&lt;/code&gt; 或空对象）写入缓存，设置较短的 TTL。下次相同请求就会命中缓存，避免再次打到数据库。这种方式实现简单、成本低。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;注意：如果攻击请求中的 key 都是不同且仅请求一次，缓存空对象的效果会受限（每个 key 仍然需要一次后端查询）。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;布隆过滤器（Bloom Filter）&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;将所有合法的 key 构建到布隆过滤器中，查询时先经过布隆过滤器判断：若布隆过滤器判断“不存在”，则可以直接拦截请求，不去查数据库；若判断“可能存在”，再去数据库验证。这能挡掉绝大部分非法请求。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;布隆过滤器的缺点：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;不支持删除（需要重建以控制误判率）。&lt;/li&gt;&#xA;&lt;li&gt;对缓存局部性不友好，查询可能跨越大内存空间，影响 CPU 缓存命中率，从而使查询性能下降。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;布谷鸟过滤器（Cuckoo Filter）&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;布谷鸟过滤器是布隆过滤器的一种替代方案，支持删除并在某些场景下具有更好的空间/性能折衷，可作为更优选项之一。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;三缓存雪崩&#34;&gt;三、缓存雪崩&lt;/h2&gt;&#xA;&lt;p&gt;缓存雪崩是指：大量不同的 key 在短时间内同时过期，导致大量请求回落到数据库或后端服务，产生剧烈的流量冲击。&lt;/p&gt;&#xA;&lt;p&gt;这与缓存击穿不同：缓存击穿通常是大量请求集中访问同一条数据，而缓存雪崩是大量不同数据同时失效。&lt;/p&gt;&#xA;&lt;p&gt;常见缓解策略：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;错峰过期（随机化 TTL）&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

@@ -1,47 +1,115 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Categories on Double Blog</title>
-    <link>https://WangDouble-Dev.github.io/categories/</link>
-    <description>Recent content in Categories on Double Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Fri, 14 Mar 2025 17:07:01 +0800</lastBuildDate>
-    <atom:link href="https://WangDouble-Dev.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>其它</title>
-      <link>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</link>
-      <pubDate>Fri, 14 Mar 2025 17:07:01 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Github</title>
-      <link>https://WangDouble-Dev.github.io/categories/github/</link>
-      <pubDate>Sun, 24 Dec 2023 15:00:53 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/github/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Nginx</title>
-      <link>https://WangDouble-Dev.github.io/categories/nginx/</link>
-      <pubDate>Sat, 23 Dec 2023 18:05:16 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/nginx/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Docker</title>
-      <link>https://WangDouble-Dev.github.io/categories/docker/</link>
-      <pubDate>Sun, 10 Dec 2023 20:51:53 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/docker/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Guide</title>
-      <link>https://WangDouble-Dev.github.io/categories/guide/</link>
-      <pubDate>Thu, 16 Feb 2023 18:58:11 +0800</pubDate>
-      <guid>https://WangDouble-Dev.github.io/categories/guide/</guid>
-      <description></description>
-    </item>
-  </channel>
+	<channel>
+		<title>Categories on Double Blog</title>
+		<link>https://WangDouble-Dev.github.io/categories/</link>
+		<description>Recent content in Categories on Double Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Wed, 24 Jun 2026 19:54:13 +0800</lastBuildDate>
+		
+			<atom:link href="https://WangDouble-Dev.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Database</title>
+				<link>https://WangDouble-Dev.github.io/categories/database/</link>
+				<pubDate>Wed, 24 Jun 2026 19:54:13 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/database/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Explain</title>
+				<link>https://WangDouble-Dev.github.io/categories/explain/</link>
+				<pubDate>Wed, 24 Jun 2026 19:54:13 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/explain/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>MySQL</title>
+				<link>https://WangDouble-Dev.github.io/categories/mysql/</link>
+				<pubDate>Wed, 24 Jun 2026 19:54:13 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/mysql/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Performance</title>
+				<link>https://WangDouble-Dev.github.io/categories/performance/</link>
+				<pubDate>Wed, 24 Jun 2026 19:54:13 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/performance/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Sql</title>
+				<link>https://WangDouble-Dev.github.io/categories/sql/</link>
+				<pubDate>Wed, 24 Jun 2026 19:54:13 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/sql/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Redis</title>
+				<link>https://WangDouble-Dev.github.io/categories/redis/</link>
+				<pubDate>Wed, 24 Jun 2026 18:37:35 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/redis/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>数据类型</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+				<pubDate>Wed, 24 Jun 2026 18:37:35 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>缓存</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98/</link>
+				<pubDate>Wed, 24 Jun 2026 18:32:29 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>缓存击穿</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/</link>
+				<pubDate>Wed, 24 Jun 2026 18:32:29 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>缓存穿透</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/</link>
+				<pubDate>Wed, 24 Jun 2026 18:32:29 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>缓存雪崩</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</link>
+				<pubDate>Wed, 24 Jun 2026 18:32:29 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>其它</title>
+				<link>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</link>
+				<pubDate>Mon, 05 Aug 2024 20:51:39 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/%E5%85%B6%E5%AE%83/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Github</title>
+				<link>https://WangDouble-Dev.github.io/categories/github/</link>
+				<pubDate>Sun, 24 Dec 2023 15:00:53 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/github/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Guide</title>
+				<link>https://WangDouble-Dev.github.io/categories/guide/</link>
+				<pubDate>Thu, 16 Feb 2023 18:58:11 +0800</pubDate>
+				<guid>https://WangDouble-Dev.github.io/categories/guide/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>
